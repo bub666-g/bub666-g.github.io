@@ -9,28 +9,38 @@
 <meta name="description" content="Eva Bulai, Unity Technical Artist at Superplay. VFX, UI architecture, visual scripting and mobile optimization on Disney Solitaire.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap">
 <style>
-/* Layout: one long scroll. Hero framed like a Unity Game view, features as media + "Inspector" panels listing the components behind each effect. */
+/* Layout: one long scroll on a dark indigo page. Each feature reads title -> big media -> Inspector + Hierarchy windows (Unity 6 layout, pastel colours). One typeface, Spotify-style: heavy tight headlines, quiet body. */
 :root {
-  --ink: #110f1f;        /* page */
-  --panel: #1a1730;      /* raised surfaces */
-  --panel-2: #221e3d;
-  --line: #322d52;
-  --text: #ece8f7;
-  --muted: #a49ebf;
-  --gold: #f2c46d;       /* sparkle accent: the "whimsical" side */
-  --cyan: #8de0dc;       /* inspector accent: the "technical" side */
-  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ink: #0b0a22;        /* page: midnight blue */
+  --panel: #16143a;      /* raised surfaces on the page */
+  --panel-2: #201d4d;
+  --line: #2f2b68;
+  --text: #f6f2ff;
+  --muted: #b4acd9;
+  --violet: #6b5bd6;     /* nebula */
+  --spark-a: 246, 201, 107;  /* accent as r,g,b for glows */
+  --spark-b: 185, 164, 255;  /* accent-2 as r,g,b */
+  --nebula: 107, 91, 214;
+  --accent: #f6c96b;     /* gold */
+  --accent-2: #b9a4ff;   /* lavender */
+  /* editor windows: a touch darker than pure pastel */
+  --w-strip: #a690f0;
+  --w-tab: #ecbb57;
+  --w-body: #c8bbea;
+  --w-field: #dcd2f5;
+  --w-line: #2e2370;
+  --w-sep: rgba(46, 35, 112, .24);
+  --w-ink: #221a5a;
+  --w-soft: rgba(34, 26, 90, .66);
+  --font: "Figtree", "Circular Std", "Helvetica Neue", Arial, system-ui, sans-serif;
   --step--1: 0.8125rem;
   --step-0: 1rem;
-  --step-1: 1.25rem;
   --step-2: 1.75rem;
-  --step-3: clamp(2rem, 4.2vw, 3rem);
-  --step-4: clamp(2.5rem, 6.4vw, 4.75rem);
-  --radius: 10px;
+  --step-3: clamp(2rem, 4.4vw, 3.25rem);
+  --step-4: clamp(2.75rem, 7vw, 5.25rem);
+  --radius: 12px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -39,16 +49,49 @@ body {
   margin: 0;
   background: var(--ink);
   color: var(--text);
-  font-family: var(--font-body);
+  font-family: var(--font);
   font-size: var(--step-0);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+
+/* Space backdrop: pastel nebulae + two star layers, fixed behind everything */
+.space {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60vw 45vw at 88% 6%, rgba(var(--spark-a), .20), transparent 70%),
+    radial-gradient(55vw 40vw at 4% 42%, rgba(var(--spark-b), .11), transparent 70%),
+    radial-gradient(70vw 50vw at 70% 96%, rgba(var(--nebula), .24), transparent 70%),
+    radial-gradient(40vw 30vw at 30% 78%, rgba(var(--spark-a), .09), transparent 70%),
+    var(--ink);
+}
+.space::before, .space::after { content: ""; position: absolute; inset: 0; background-repeat: repeat; }
+.space::before {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.75), transparent 60%),
+    radial-gradient(1px 1px at 140px 90px, rgba(var(--spark-a),.85), transparent 60%),
+    radial-gradient(1px 1px at 230px 200px, rgba(255,255,255,.6), transparent 60%),
+    radial-gradient(1px 1px at 80px 260px, rgba(var(--spark-b),.8), transparent 60%),
+    radial-gradient(1px 1px at 290px 40px, rgba(255,255,255,.5), transparent 60%),
+    radial-gradient(1px 1px at 180px 300px, rgba(255,255,255,.55), transparent 60%);
+  background-size: 320px 320px;
+  opacity: .8;
+}
+.space::after {
+  background-image:
+    radial-gradient(1.6px 1.6px at 60px 120px, rgba(255,255,255,.95), transparent 60%),
+    radial-gradient(1.6px 1.6px at 380px 60px, rgba(var(--spark-a),.95), transparent 60%),
+    radial-gradient(1.6px 1.6px at 260px 420px, rgba(var(--spark-b),.95), transparent 60%),
+    radial-gradient(1.6px 1.6px at 470px 300px, rgba(255,255,255,.9), transparent 60%);
+  background-size: 540px 540px;
+  animation: twinkle 5s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from { opacity: .35; } to { opacity: 1; } }
 img, video { max-width: 100%; display: block; }
 a { color: inherit; }
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font); line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: -0.035em; font-weight: 800; }
 p { margin: 0; }
 
 .wrap {
@@ -57,214 +100,248 @@ p { margin: 0; }
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.label {
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.label { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
 /* Top bar */
-.topbar {
-  position: sticky;
-  top: env(safe-area-inset-top, 0px);
-  z-index: 20;
-  background: color-mix(in srgb, var(--ink) 86%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-}
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--ink) 86%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
-.wordmark { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; text-decoration: none; letter-spacing: 0.01em; }
-.wordmark span { color: var(--gold); }
-.nav { display: flex; gap: 22px; font-size: 0.9375rem; }
+.wordmark { font-weight: 900; font-size: 1.1875rem; text-decoration: none; letter-spacing: -0.02em; }
+.wordmark span { color: var(--accent); }
+.nav { display: flex; gap: 24px; font-size: 0.9375rem; font-weight: 600; }
 .nav a { text-decoration: none; color: var(--muted); }
 .nav a:hover { color: var(--text); }
 
 /* Hero */
 .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
 .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.hero .wrap {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(28px, 5vw, 64px);
-  align-items: center;
-  padding-block: clamp(48px, 8vw, 96px);
-}
-.hero-copy { display: grid; gap: 22px; min-width: 0; }
-.hero h1 { font-size: var(--step-4); font-weight: 800; }
-.hero h1 em { font-style: normal; color: var(--gold); }
-.hero h1 b { font-weight: 800; color: var(--cyan); }
-.hero-lede { color: var(--muted); font-size: 1.125rem; max-width: 34em; }
-.hero-lede strong { color: var(--text); font-weight: 600; }
+.hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 64px); align-items: center; padding-block: clamp(48px, 8vw, 96px); }
+.hero-copy { display: grid; gap: 24px; min-width: 0; }
+.hero h1 { font-size: var(--step-4); font-weight: 900; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero h1 b { font-weight: 900; color: var(--accent-2); }
+.hero-lede { color: var(--muted); font-size: 1.1875rem; line-height: 1.55; max-width: 32em; }
+.hero-lede strong { color: var(--text); font-weight: 700; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 18px; border-radius: 999px;
-  font-weight: 600; font-size: 0.9375rem; text-decoration: none;
-  border: 1px solid var(--line);
-}
-.btn-primary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-.btn-primary:hover { filter: brightness(1.06); }
-.btn-ghost:hover { border-color: var(--muted); }
+/* Retro window buttons: chunky outline + hard offset shadow, press down on click */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 0.9375rem; text-decoration: none; border: 2px solid var(--w-line); background: var(--w-body); color: var(--w-ink); box-shadow: 4px 4px 0 var(--accent-2); transition: transform .12s ease, box-shadow .12s ease; }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-2); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--accent-2); }
+.btn-primary { background: var(--accent); }
 
-/* Unity-style Game view frame */
-.gameview {
-  min-width: 0;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: 0 30px 80px -30px rgba(0,0,0,.7);
-}
-.gv-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 0 10px 0 0;
-  background: var(--panel-2);
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
-}
-.gv-tabs { display: flex; }
-.gv-tab { padding: 8px 14px; border-right: 1px solid var(--line); }
-.gv-tab.on { background: var(--panel); color: var(--text); }
-.gv-controls { display: flex; align-items: center; gap: 10px; }
-.gv-btn {
-  width: 26px; height: 22px; border-radius: 4px; border: 1px solid var(--line);
-  background: var(--panel); color: var(--cyan); cursor: pointer; display: grid; place-items: center; padding: 0;
-}
+/* Small play/pause button used in panel tab bars */
+.gv-btn { width: 26px; height: 22px; border-radius: 5px; border: 1.5px solid var(--w-line); background: var(--accent); color: var(--w-ink); box-shadow: 2px 2px 0 var(--accent-2); cursor: pointer; display: grid; place-items: center; padding: 0; transition: transform .12s ease, box-shadow .12s ease; }
+.gv-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--accent-2); }
+.gv-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--accent-2); }
 .gv-btn svg { width: 10px; height: 10px; fill: currentColor; }
-.gameview video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #000; }
-.gv-foot { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
-.gv-foot b { color: var(--text); font-weight: 500; }
+.hero-win { min-width: 0; }
 
-/* Facts */
-.facts { border-bottom: 1px solid var(--line); }
-.facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 28px; gap: 24px; }
-.fact { display: grid; gap: 4px; min-width: 0; }
-.fact strong { font-family: var(--font-display); font-size: var(--step-2); font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; line-height: 1.1; }
-.fact span { color: var(--muted); font-size: 0.9375rem; line-height: 1.4; }
+/* Stats: retro game UI in the portfolio palette */
+.facts { padding-block: clamp(32px, 5vw, 48px); }
+.px { font-family: "Press Start 2P", ui-monospace, "SF Mono", Menlo, monospace; font-weight: 400; letter-spacing: 0; }
+.rwin { background: var(--w-body); color: var(--w-ink); border: 2px solid var(--w-line); border-radius: 12px; box-shadow: 4px 4px 0 var(--accent-2); overflow: hidden; }
+.rwin-title { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--accent); border-bottom: 2px solid var(--w-line); padding: 9px 14px; font-size: 9px; line-height: 1.6; }
+@keyframes blink { 50% { opacity: 0; } }
+.blink { animation: blink 1.1s steps(1) infinite; }
+
+/* Character sheet */
+.stats-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 9px; line-height: 1.6; color: var(--accent-2); margin-bottom: 16px; }
+.sheet { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.stat-body { padding: 16px 18px 18px; display: grid; grid-template-rows: 30px 42px auto; gap: 10px; align-content: start; min-width: 0; }
+.stat-v { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; font-size: 20px; line-height: 30px; color: var(--w-ink); }
+.stat-v small { font-size: 9px; color: var(--w-soft); }
+.stat-viz { display: flex; align-items: center; min-width: 0; }
+.stat-d { font-size: 0.875rem; line-height: 1.45; }
+.bar { display: flex; gap: 2px; width: 140px; padding: 3px; border: 2px solid var(--w-line); background: var(--w-field); border-radius: 4px; }
+.bar i { flex: 1; height: 10px; }
+.bar i.on { background: var(--accent); }
+.tip { animation: blink 1.1s steps(1) infinite; }
+.slots, .party { display: flex; gap: 5px; }
+.slot { width: clamp(32px, 3.4vw, 40px); height: clamp(32px, 3.4vw, 40px); border: 2px solid var(--w-line); background: var(--w-field); border-radius: 7px; display: grid; place-items: center; box-shadow: 2px 2px 0 var(--accent-2); }
+.slot .ic { width: 58%; height: 58%; color: var(--w-ink); stroke-width: 1.6; }
+.battery { display: flex; align-items: center; }
+.battery .cells { display: flex; gap: 3px; padding: 3px; border: 2px solid var(--w-line); border-radius: 4px; background: var(--w-field); }
+.battery .cells i { width: 16px; height: 16px; background: var(--accent-2); }
+.battery .cap { width: 5px; height: 10px; background: var(--w-line); border-radius: 0 2px 2px 0; }
+.member { width: clamp(26px, 2.8vw, 32px); height: clamp(26px, 2.8vw, 32px); display: grid; place-items: center; border: 2px solid var(--w-line); border-radius: 6px; font-size: 6px; background: var(--accent); }
+.member:nth-child(even) { background: var(--accent-2); }
 
 /* Sections */
-.section { padding-block: clamp(56px, 9vw, 104px); }
-.section-head { display: grid; gap: 10px; margin-bottom: clamp(28px, 4vw, 44px); max-width: 44em; }
-.section-head h2 { font-size: var(--step-3); font-weight: 700; }
-.section-head p { color: var(--muted); }
+.section { padding-block: clamp(64px, 9vw, 112px); }
+.section-head { display: grid; gap: 12px; margin-bottom: clamp(28px, 4vw, 44px); max-width: 44em; }
+.section-head h2 { font-size: var(--step-3); }
+.section-head h2 b { color: var(--accent-2); font-weight: inherit; }
 
-/* Toolkit */
-.toolkit { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-.tool-group { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; align-content: start; }
-.tool-group h3 { font-size: 1.0625rem; font-weight: 700; }
+/* Toolkit: retro window cards, same outline + hard shadow as the buttons */
+.toolkit { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
+.tool-group { background: var(--w-body); color: var(--w-ink); border: 2px solid var(--w-line); border-radius: 12px; overflow: hidden; display: grid; align-content: start; box-shadow: 4px 4px 0 var(--accent-2); transition: transform .12s ease, box-shadow .12s ease; }
+.tool-group:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-2); }
+.tool-group h3 { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; color: var(--w-ink); background: var(--accent); border-bottom: 2px solid var(--w-line); padding: 9px 14px; }
+.tool-group .chips { padding: 14px; }
+.tool-group .chip { background: var(--w-field); color: var(--w-ink); border: 1.5px solid var(--w-line); border-radius: 7px; font-weight: 600; padding: 4px 10px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { font-size: 0.8125rem; padding: 4px 10px; border-radius: 999px; background: var(--panel-2); color: var(--text); border: 1px solid var(--line); }
+.chip { font-size: 0.8125rem; font-weight: 500; padding: 5px 11px; border-radius: 999px; background: var(--panel-2); color: var(--text); }
 
-/* Project banner */
-.project-banner {
-  position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line);
-  display: grid; background: var(--panel);
-}
-.project-banner img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; }
-.project-meta {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
-  padding: 18px 22px; border-top: 1px solid var(--line);
-}
+/* Project */
+.project-banner { border: 2px solid var(--w-line); border-radius: 12px; overflow: hidden; display: grid; background: var(--w-body); color: var(--w-ink); box-shadow: 4px 4px 0 var(--accent-2); }
+.project-banner .rwin-title { border-bottom: 2px solid var(--w-line); }
+.project-banner img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; border-bottom: 2px solid var(--w-line); }
+.project-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 16px 20px; }
+.project-meta .label { font-family: "Press Start 2P", ui-monospace, monospace; font-size: 8px; letter-spacing: 0; color: var(--w-soft); line-height: 1.8; }
 .project-meta div { display: grid; gap: 2px; min-width: 0; }
-.project-meta b { font-weight: 600; }
-.project-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); margin-top: 36px; }
-.project-intro h2 { font-size: var(--step-3); font-weight: 700; }
-.project-intro .copy { display: grid; gap: 14px; color: var(--muted); max-width: 36em; }
-.project-intro .copy strong { color: var(--text); font-weight: 600; }
+.project-meta b { font-weight: 700; }
+.project-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); margin-top: 40px; }
+.project-intro h2 { font-size: var(--step-3); }
+.project-intro .copy { display: grid; gap: 14px; color: var(--muted); max-width: 36em; font-size: 1.0625rem; }
+.project-intro .copy strong { color: var(--text); font-weight: 700; }
 
-/* Features */
-.features { display: grid; gap: clamp(64px, 9vw, 112px); margin-top: clamp(56px, 8vw, 96px); }
-.feature { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 52px); align-items: start; }
-.feature:nth-child(even) .feature-media { order: 2; }
-.feature-media { display: grid; gap: 12px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); }
-.feature-body { display: grid; gap: 20px; min-width: 0; }
-.feature-body h3 { font-size: var(--step-2); font-weight: 700; }
-.feature-body .desc { color: var(--muted); display: grid; gap: 12px; }
-.feature-body .desc strong { color: var(--text); font-weight: 600; }
-.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.clip { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #000; }
+/* Features: title -> media -> windows */
+.features { display: grid; gap: clamp(80px, 11vw, 140px); margin-top: clamp(64px, 8vw, 104px); }
+.feature { display: grid; gap: clamp(20px, 3vw, 28px); }
+.feature-head { display: flex; align-items: center; gap: 14px; }
+.feature-head h3 { font-size: var(--step-3); }
+.feature-head .dot { width: 18px; height: 18px; flex: none; border-radius: 5px; background: var(--accent); border: 2px solid var(--w-line); box-shadow: 3px 3px 0 var(--accent-2); }
+.feature-media { display: grid; gap: 14px; min-width: 0; }
+.feature-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 28px); align-items: start; }
+.feature-detail.solo { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.clip { border-radius: var(--radius); overflow: hidden; background: #000; }
 .clip video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-.side-shot { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 12px; align-items: center; }
-.side-shot img { border-radius: var(--radius); border: 1px solid var(--line); width: 100%; }
-.caption { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+.side-shot { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 14px; align-items: center; }
+.side-shot img { width: 100%; border: 2px solid var(--w-line); border-radius: 12px; box-shadow: 4px 4px 0 var(--accent-2); }
 
 /* YouTube facade */
-.yt {
-  position: relative; display: block; border-radius: var(--radius); overflow: hidden;
-  border: 1px solid var(--line); background: #000; aspect-ratio: 16 / 9; text-decoration: none;
-}
-.yt img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease, opacity .3s; opacity: .88; }
-.yt:hover img { transform: scale(1.03); opacity: 1; }
-.yt .play {
-  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
-  width: 68px; height: 68px; border-radius: 50%; background: var(--gold); display: grid; place-items: center;
-  box-shadow: 0 0 0 8px color-mix(in srgb, var(--gold) 25%, transparent);
-}
-.yt .play svg { width: 22px; height: 22px; fill: var(--ink); margin-left: 4px; }
-.yt .yt-label {
-  position: absolute; left: 12px; bottom: 12px; padding: 4px 10px; border-radius: 999px;
-  background: rgba(10, 8, 20, .78); color: #fff; font-size: 0.75rem; font-family: var(--font-mono);
-}
+.yt { position: relative; display: block; border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 16 / 9; text-decoration: none; }
+.yt img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease, opacity .3s; opacity: .9; }
+.yt:hover img { transform: scale(1.02); opacity: 1; }
+.yt .play { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 70px; height: 56px; border-radius: 14px; background: var(--accent); border: 2px solid var(--w-line); box-shadow: 4px 4px 0 var(--accent-2); display: grid; place-items: center; transition: transform .12s ease, box-shadow .12s ease; }
+.yt:hover .play { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-2); }
+.yt:active .play { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--accent-2); }
+.yt .play svg { width: 22px; height: 22px; fill: var(--w-ink); margin-left: 4px; }
+.yt .yt-label { position: absolute; left: 12px; bottom: 12px; padding: 5px 12px; border-radius: 999px; background: rgba(10, 8, 20, .78); color: #fff; font-size: 0.75rem; font-weight: 600; }
 .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* Inspector panel */
-.inspector { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); font-family: var(--font-mono); font-size: 0.8125rem; overflow: hidden; }
-.insp-head { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; background: var(--panel-2); border-bottom: 1px solid var(--line); color: var(--muted); }
-.insp-head b { color: var(--text); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.comp { display: grid; grid-template-columns: 14px minmax(0, 1fr); column-gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--line); }
-.comp:last-child { border-bottom: 0; }
-.comp .tick { width: 14px; height: 14px; margin-top: 3px; border-radius: 3px; background: var(--cyan); position: relative; }
-.comp .tick::after { content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid var(--ink); border-width: 0 2px 2px 0; rotate: 45deg; }
-.comp b { color: var(--cyan); font-weight: 500; }
-.comp span.prop { grid-column: 2; color: var(--muted); }
+/* ---------- Unity 6 editor windows, pastel colours ---------- */
+.uwin { background: var(--w-body); border: 2px solid var(--w-line); border-radius: 12px; overflow: hidden; color: var(--w-ink); font-size: 0.875rem; line-height: 1.55; box-shadow: 4px 4px 0 var(--accent-2); }
+.ic { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.uwin-tabs { display: flex; align-items: stretch; justify-content: space-between; background: var(--w-strip); border-bottom: 2px solid var(--w-line); }
+/* chrome matches the header Game view: 0.75rem, weight 500 */
+.uwin-tab { display: flex; align-items: center; padding: 5px 12px; background: var(--w-tab); border-right: 1px solid var(--w-line); font-weight: 500; font-size: 0.75rem; }
+.uwin-tools { display: flex; align-items: center; gap: 10px; padding: 0 10px; color: var(--w-soft); font-size: 0.75rem; font-weight: 500; }
+.wfield { background: var(--w-field); border: 1px solid var(--w-sep); border-radius: 4px; padding: 1px 7px; font-size: 0.75rem; font-weight: 500; min-width: 0; }
+.wfoot { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; font-size: 0.75rem; font-weight: 500; background: var(--w-strip); border-top: 2px solid var(--w-line); color: var(--w-soft); }
+.wfoot b { color: var(--w-ink); font-weight: 600; }
+.wfoot span:last-child { text-align: right; }
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+.fold { width: 12px; height: 12px; transition: rotate .15s ease; }
+details[open] > summary .fold { rotate: 90deg; }
+.fold-gap { width: 12px; flex: none; }
 
-.lists { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
-.lists.single { grid-template-columns: minmax(0, 1fr); }
-.lists h4 { margin: 0 0 8px; }
-.lists ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); font-size: 0.9375rem; line-height: 1.5; }
-.lists li::marker { color: var(--gold); }
+/* Game / Scene video window */
+.vtabs { display: flex; }
+.vtab { appearance: none; border: 0; border-right: 1px solid var(--w-line); background: transparent; color: var(--w-ink); font: inherit; font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; padding: 5px 12px; cursor: pointer; }
+.vtab:hover:not(:disabled) { background: color-mix(in srgb, var(--w-tab) 45%, transparent); }
+.vtab[aria-selected="true"] { background: var(--w-tab); }
+.vtab:disabled { color: color-mix(in srgb, var(--w-ink) 35%, transparent); cursor: not-allowed; }
+.vview { background: #000; }
+.vview video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.vwin .yt { border-radius: 0; }
 
-/* About */
-.about { border-top: 1px solid var(--line); background: var(--panel); }
-.about-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(24px, 5vw, 64px); }
-.about-grid .copy { display: grid; gap: 16px; color: var(--muted); max-width: 38em; }
-.about-grid .copy strong { color: var(--text); font-weight: 600; }
-.pull { font-family: var(--font-display); font-size: var(--step-2); font-weight: 700; line-height: 1.2; color: var(--text); }
-.pull em { font-style: normal; color: var(--gold); }
-.disciplines { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+/* Inspector */
+.go-head { display: flex; align-items: center; gap: 7px; padding: 6px 10px; border-bottom: 1px solid var(--w-sep); }
+.go-head .go-icon { width: 16px; height: 16px; color: var(--w-line); }
+.go-head .wfield { background: none; border: 0; padding: 0; font-size: 0.8125rem; font-weight: 700; color: var(--w-ink); }
+.comp + .comp { border-top: 1px solid var(--w-sep); }
+.comp > summary { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: color-mix(in srgb, var(--w-tab) 32%, transparent); font-size: 0.75rem; font-weight: 600; }
+.comp > summary:hover { background: color-mix(in srgb, var(--w-tab) 50%, transparent); }
+.comp > summary .ctype { color: var(--w-line); }
+.comp-body { padding: 8px 14px 12px 40px; color: var(--w-ink); }
+
+/* Hierarchy */
+.h-toolbar { display: flex; gap: 5px; padding: 4px 6px; border-bottom: 1px solid var(--w-sep); }
+.h-toolbar .plus { font-weight: 700; }
+.h-toolbar .plus::after { content: "▾"; margin-left: 5px; font-size: 10px; }
+.h-toolbar .search { flex: 1; display: flex; align-items: center; gap: 6px; color: var(--w-soft); }
+.h-tree { padding: 4px 0 8px; }
+.h-row { display: flex; align-items: flex-start; gap: 7px; padding: 4px 12px 4px calc(10px + var(--d, 0) * 18px); user-select: none; }
+.h-row .ic, .h-row .fold, .h-row .fold-gap { margin-top: 4px; }
+.h-row .txt { min-width: 0; }
+.h-row:hover { background: color-mix(in srgb, var(--w-line) 7%, transparent); }
+.h-row.sel { background: var(--w-strip); }
+.h-row.scene { font-weight: 700; padding-top: 3px; padding-bottom: 3px; }
+.h-row.scene .ic { color: var(--w-line); }
+.h-row.group { font-weight: 700; }
+.h-row.group .ic:not(.fold) { color: var(--w-line); }
+.h-row.leaf .ic { color: var(--w-soft); }
+
+/* About: retro window for the text, grouped discipline badges */
+.about-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
+.about-side { display: grid; gap: 22px; align-content: start; }
+.pull { font-size: var(--step-3); line-height: 1.05; color: var(--text); }
+.pull em { font-style: normal; color: var(--accent); }
+.about-card .about-body { display: grid; gap: 16px; padding: 20px 22px 24px; font-size: 1rem; line-height: 1.65; color: var(--w-ink); }
+
+/* Discipline badges: party window */
+.disc-c .disc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 14px; }
+.disc-c .tile { display: grid; justify-items: center; gap: 6px; padding: 10px 6px; border: 2px solid var(--w-line); border-radius: 8px; background: var(--w-field); box-shadow: 2px 2px 0 var(--accent-2); text-align: center; }
+.disc-c .tile b { width: 34px; height: 34px; display: grid; place-items: center; border: 2px solid var(--w-line); border-radius: 6px; background: var(--accent); font-size: 7px; font-weight: 400; }
+.disc-c .tile:nth-child(even) b { background: var(--accent-2); }
+.disc-c .tile span { font-size: 0.8125rem; font-weight: 700; color: var(--w-ink); }
 
 /* Contact */
-.contact .wrap { display: grid; gap: 22px; justify-items: start; }
-.contact h2 { font-size: var(--step-4); font-weight: 800; }
-.contact h2 em { font-style: normal; color: var(--gold); }
+.contact .wrap { display: grid; gap: 24px; justify-items: start; }
+.contact h2 { font-size: var(--step-4); font-weight: 900; }
+.contact h2 em { font-style: normal; color: var(--accent); }
 .contact-rows { display: flex; flex-wrap: wrap; gap: 12px; }
-.todo { border-style: dashed; color: var(--muted); }
 
 footer { border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 24px; color: var(--muted); font-size: 0.8125rem; }
 
+@media (max-width: 1080px) {
+  .sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 900px) {
-  .hero .wrap, .project-intro, .about-grid, .feature { grid-template-columns: minmax(0, 1fr); }
-  .feature:nth-child(even) .feature-media { order: 0; }
-  .feature-media { position: static; }
-  .facts .wrap, .project-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero .wrap, .project-intro, .about-grid, .feature-detail { grid-template-columns: minmax(0, 1fr); }
+  .project-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
-  .nav { gap: 14px; font-size: 0.875rem; }
-  .lists, .duo { grid-template-columns: minmax(0, 1fr); }
+  .nav { gap: 16px; font-size: 0.875rem; }
+  .duo, .sheet { grid-template-columns: minmax(0, 1fr); }
   .gv-tab:not(.on) { display: none; }
+  .h-row { padding-left: calc(8px + var(--d, 0) * 12px); }
+  .comp-body { padding-left: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .yt img { transition: none; }
+  .yt img, .fold, .btn, .yt .play, .gv-btn, .tool-group { transition: none; }
+  .space::after { animation: none; opacity: .8; }
+  .blink, .tip { animation: none; }
 }
 </style>
 </head> <!--site-only-->
 <body> <!--site-only-->
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7.2v3.8M8 5v.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></symbol>
+  <symbol id="i-kebab" viewBox="0 0 16 16"><path d="M8 3.5v.01M8 8v.01M8 12.5v.01" stroke-width="2.4"/></symbol>
+  <symbol id="i-cube" viewBox="0 0 16 16"><path d="M8 1.8l5.5 3.1v6.2L8 14.2 2.5 11.1V4.9z"/><path d="M2.5 4.9L8 8l5.5-3.1M8 8v6.2"/></symbol>
+  <symbol id="i-list" viewBox="0 0 16 16"><path d="M3 4h10M5 8h8M7 12h6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4"/><path d="M10 10l3.5 3.5"/></symbol>
+  <symbol id="i-fold" viewBox="0 0 16 16"><path d="M6 4l4 4-4 4" stroke-width="2"/></symbol>
+  <symbol id="i-scene" viewBox="0 0 16 16"><path d="M8 2l6 3.3-6 3.3-6-3.3z"/><path d="M2 8.3l6 3.3 6-3.3M2 11.2l6 3.3 6-3.3"/></symbol>
+  <symbol id="i-fx" viewBox="0 0 16 16"><path d="M8 2l1.4 4.6L14 8l-4.6 1.4L8 14l-1.4-4.6L2 8l4.6-1.4z"/></symbol>
+  <symbol id="i-anim" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="9" rx="1.5"/><path d="M7 6.3v3.4L9.8 8z"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 16 16"><rect x="2.5" y="4" width="3" height="8"/><rect x="6.5" y="4" width="3" height="8"/><rect x="10.5" y="4" width="3" height="8"/></symbol>
+  <symbol id="i-script" viewBox="0 0 16 16"><path d="M6 3c-1.5 0-1.5 1-1.5 2.2S4.5 8 3 8c1.5 0 1.5 1.6 1.5 2.8S4.5 13 6 13M10 3c1.5 0 1.5 1 1.5 2.2S11.5 8 13 8c-1.5 0-1.5 1.6-1.5 2.8S11.5 13 10 13"/></symbol>
+  <symbol id="i-tex" viewBox="0 0 16 16"><rect x="2.5" y="3" width="11" height="10" rx="1"/><path d="M2.5 11l3.5-3.5 3 3 2-2 2.5 2.5"/><circle cx="10.5" cy="6" r="1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></symbol>
+  <symbol id="i-scroll" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><path d="M5 5.5h4.5M5 8h4.5M5 10.5h4.5M11.5 4.5v3"/></symbol>
+  <symbol id="i-mask" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><circle cx="8" cy="8" r="3.2"/></symbol>
+  <symbol id="i-game" viewBox="0 0 16 16"><path d="M5 5h6a3.5 3.5 0 0 1 3.4 4.3l-.5 2.1a1.6 1.6 0 0 1-2.7.8L9.6 10.6H6.4l-1.6 1.6a1.6 1.6 0 0 1-2.7-.8l-.5-2.1A3.5 3.5 0 0 1 5 5z"/><path d="M5 7v2M4 8h2M10.5 7.5v.01M11.8 8.7v.01"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 16 16"><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12"/></symbol>
+</svg>
+<div class="space" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="wrap">
@@ -290,28 +367,31 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <a class="btn btn-ghost" href="#contact">Get in touch</a>
         </div>
       </div>
-      <figure class="gameview" style="margin:0">
-        <div class="gv-bar">
-          <div class="gv-tabs"><span class="gv-tab">Scene</span><span class="gv-tab on">Game</span></div>
-          <div class="gv-controls">
-            <button class="gv-btn" id="heroToggle" type="button" aria-label="Pause video">
-              <svg viewBox="0 0 10 10" id="heroIcon"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg>
-            </button>
-            <span>1920×1080</span>
+      <figure class="uwin vwin hero-win" style="margin:0">
+        <div class="uwin-tabs" role="tablist" aria-label="Showreel">
+          <div class="vtabs">
+            <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
+            <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
           </div>
+          <span class="uwin-tools"><button class="gv-btn" id="heroToggle" type="button" aria-label="Pause video"><svg viewBox="0 0 10 10" id="heroIcon"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg></button><span>1920×1080</span></span>
         </div>
-        <video id="heroVideo" src="assets/friends-invite-1.mp4" poster="assets/friends-invite-1.jpg" autoplay muted loop playsinline preload="metadata"></video>
-        <figcaption class="gv-foot"><span>Friends Invite Badge</span><span><b>Particle System</b> · trail + sparkles</span></figcaption>
+        <div class="vview"><video id="heroVideo" src="assets/friends-invite-1.mp4" poster="assets/friends-invite-1.jpg" autoplay muted loop playsinline preload="metadata"></video></div>
+        <figcaption class="wfoot"><span>Friends Invite Badge</span><span><b>Particle System</b> · trail + sparkles</span></figcaption>
       </figure>
     </div>
   </section>
 
   <section class="facts" aria-label="At a glance">
     <div class="wrap">
-      <div class="fact"><strong>5</strong><span>live features built or supported on Disney Solitaire</span></div>
-      <div class="fact"><strong>12</strong><span>feature reskins optimized for low-end mobile</span></div>
-      <div class="fact"><strong>90%</strong><span>of Race feature logic built in visual scripting</span></div>
-      <div class="fact"><strong>6</strong><span>disciplines I work with every day</span></div>
+
+      <!-- Character sheet: four separate stat cards -->
+      <div class="stats-head px"><span>Player stats</span><span>Class: Unity Technical Artist</span></div>
+      <div class="sheet">
+          <div class="rwin"><div class="rwin-title px">Level</div><div class="stat-body"><span class="stat-v px">2<small>yrs</small></span><div class="stat-viz"><div class="bar" title="XP toward level 3"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on tip"></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><p class="stat-d">in live mobile production as a Unity Technical Artist</p></div></div>
+          <div class="rwin"><div class="rwin-title px">Skills</div><div class="stat-body"><span class="stat-v px">5<small>crafts</small></span><div class="stat-viz slots"><span class="slot" title="Real-time VFX"><svg class="ic"><use href="#i-fx"/></svg></span><span class="slot" title="Animation"><svg class="ic"><use href="#i-anim"/></svg></span><span class="slot" title="UI"><svg class="ic"><use href="#i-layout"/></svg></span><span class="slot" title="Scripting"><svg class="ic"><use href="#i-script"/></svg></span><span class="slot" title="Optimization"><svg class="ic"><use href="#i-clock"/></svg></span></div><p class="stat-d">Real-time VFX, Animation, UI, Scripting and Optimization</p></div></div>
+          <div class="rwin"><div class="rwin-title px">Performance</div><div class="stat-body"><span class="stat-v px">Low<small>end</small></span><div class="stat-viz battery"><span class="cells"><i></i><i></i><i></i><i></i><i class="tip"></i></span><span class="cap"></span></div><p class="stat-d">Optimized for low-end iOS and Android devices</p></div></div>
+          <div class="rwin"><div class="rwin-title px">Party</div><div class="stat-body"><span class="stat-v px">6<small>members</small></span><div class="stat-viz party"><span class="member px">QA</span><span class="member px">DEV</span><span class="member px">ART</span><span class="member px">ANI</span><span class="member px">PRD</span><span class="member px">MON</span></div><p class="stat-d">disciplines I work with every day: QA, Dev, Art, Animation, Product and Monetization</p></div></div>
+      </div>
     </div>
   </section>
 
@@ -319,14 +399,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div class="wrap">
       <div class="section-head">
         <p class="label">Toolkit</p>
-        <h2 id="toolkit-h">What I use to ship a feature</h2>
+        <h2 id="toolkit-h">What I use to ship a <b>feature</b></h2>
       </div>
       <div class="toolkit">
-        <div class="tool-group"><h3>VFX</h3><div class="chips"><span class="chip">Particle System</span><span class="chip">UI Particle System</span><span class="chip">Additive materials</span><span class="chip">Light sweeps</span></div></div>
-        <div class="tool-group"><h3>Animation</h3><div class="chips"><span class="chip">Animator Controller</span><span class="chip">Timeline</span><span class="chip">Playable Director</span><span class="chip">FBX import settings</span></div></div>
-        <div class="tool-group"><h3>UI architecture</h3><div class="chips"><span class="chip">Modular prefabs</span><span class="chip">Layout Groups</span><span class="chip">Content Size Fitter</span><span class="chip">Stencil masks</span><span class="chip">Render Textures</span></div></div>
-        <div class="tool-group"><h3>Logic</h3><div class="chips"><span class="chip">Visual scripting (in-house editor)</span><span class="chip">C# integration</span><span class="chip">Timers &amp; states</span></div></div>
-        <div class="tool-group"><h3>Optimization</h3><div class="chips"><span class="chip">TexturePacker atlases</span><span class="chip">iOS / Android compression</span><span class="chip">Particle budgets</span><span class="chip">Import settings</span></div></div>
+        <div class="tool-group"><h3>Real-time VFX</h3><div class="chips"><span class="chip">Shuriken Particle System</span><span class="chip">UI Particle System</span><span class="chip">Additive Materials</span><span class="chip">Light Sweep FX</span></div></div>
+        <div class="tool-group"><h3>Animation</h3><div class="chips"><span class="chip">Animator Controller (Mecanim)</span><span class="chip">Timeline</span><span class="chip">FBX Import Pipeline</span></div></div>
+        <div class="tool-group"><h3>UI Implementation</h3><div class="chips"><span class="chip">uGUI</span><span class="chip">Prefab Architecture</span><span class="chip">Auto Layout</span><span class="chip">Stencil Masking</span><span class="chip">Render Textures</span></div></div>
+        <div class="tool-group"><h3>Scripting</h3><div class="chips"><span class="chip">Visual Scripting</span><span class="chip">C#</span><span class="chip">UI State Logic</span></div></div>
+        <div class="tool-group"><h3>Optimization</h3><div class="chips"><span class="chip">Sprite Atlasing (TexturePacker)</span><span class="chip">Platform Texture Compression</span><span class="chip">Particle Budgets</span><span class="chip">Asset Import Settings</span></div></div>
       </div>
     </div>
   </section>
@@ -335,9 +415,11 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div class="wrap">
       <div class="section-head">
         <p class="label">Selected work</p>
+        <h2>Features I <b>shipped</b></h2>
       </div>
 
       <div class="project-banner">
+        <div class="rwin-title px"><span>disney_solitaire.unity</span><span>Superplay</span></div>
         <img src="assets/hero.jpg" alt="Disney Solitaire key art with Disney and Pixar characters around the game logo">
         <div class="project-meta">
           <div><span class="label">Studio</span><b>Superplay</b></div>
@@ -350,8 +432,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <div class="project-intro">
         <h2 id="work-h">Disney Solitaire</h2>
         <div class="copy">
-          <p>I joined Superplay in 2024 and started with a Unity Technical Artist bootcamp, where the studio's pipelines and techniques were presented in depth, with plenty of exercises on what a Technical Artist at Superplay does day to day.</p>
-          <p>A month later I joined <strong>Disney Solitaire</strong> as a Unity Technical Artist, and that's where the magic began. Here are some of the features I worked on.</p>
+          <p>I joined Superplay in 2024 and started off with a Unity Technical Artist bootcamp where all the pipelines and techniques were in depth presented and explained, and also got to do a lot of exercises of what a Technical Artist at Superplay would do on a daily basis.</p>
+          <p>A month later I joined <strong>Disney Solitaire</strong> as a Unity Technical Artist and that's where the magic began.</p>
+          <p>Here are some of the features I worked on:</p>
         </div>
       </div>
 
@@ -359,163 +442,244 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
         <!-- Friends Invite Badge -->
         <article class="feature" aria-labelledby="f1">
+          <div class="feature-head"><span class="dot"></span><h3 id="f1">Friends Invite Badge</h3></div>
           <div class="feature-media">
-            <div class="duo">
-              <div class="clip"><video src="assets/friends-invite-1.mp4" poster="assets/friends-invite-1.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Friends Invite Badge, envelope with sparkle trail"></video></div>
-              <div class="clip"><video src="assets/friends-invite-2.mp4" poster="assets/friends-invite-2.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Friends Invite Badge, second angle"></video></div>
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Friends Invite Badge videos">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="v1-game">Game</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="v1-scene">Scene</button>
+                </div>
+                <span class="uwin-tools"><button class="gv-btn vplay" type="button" aria-label="Pause video"><svg viewBox="0 0 10 10"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg></button><span>1920×1080</span></span>
+              </div>
+              <div class="vview" id="v1-game" role="tabpanel"><video src="assets/friends-invite-1.mp4" poster="assets/friends-invite-1.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Friends Invite Badge, envelope with sparkle trail"></video></div>
+              <div class="vview" id="v1-scene" role="tabpanel" hidden><video src="assets/friends-invite-2.mp4" poster="assets/friends-invite-2.jpg" muted loop playsinline preload="metadata" aria-label="Friends Invite Badge, second angle"></video></div>
+              <div class="wfoot"><span>Friends Invite Badge</span><span><b>Particle System</b> · trail + sparkles</span></div>
             </div>
-            <p class="caption">In-game capture · looping</p>
-          </div>
-          <div class="feature-body">
-            <p class="label">VFX · 3D integration</p>
-            <h3 id="f1">Friends Invite Badge</h3>
-            <div class="desc"><p>Using the Unity particle system on a 3D animated object, I built the whimsical trail and sparkles you see in these clips.</p></div>
-            <div class="inspector" aria-label="Unity components used">
-              <div class="insp-head"><span>Inspector</span><b>InviteBadge</b></div>
-              <div class="comp"><span class="tick"></span><b>Particle System</b><span class="prop">Trail + sparkles · Max Particles capped</span></div>
-              <div class="comp"><span class="tick"></span><b>Quad + Additive Material</b><span class="prop">Envelope glow from a soft-edged texture, no extra particle system</span></div>
-              <div class="comp"><span class="tick"></span><b>Animator</b><span class="prop">FBX import settings tuned for size</span></div>
             </div>
-            <div class="lists">
-              <div><h4 class="label">Responsibilities</h4><ul>
-                <li>3D models and animations integration</li>
-                <li>Building the UI prefab hierarchy</li>
-                <li>Creating the trail and sparkles particle system</li>
-                <li>Integrating the VFX into an animation to match a reference video</li>
-                <li>Asset optimization</li>
-              </ul></div>
-              <div><h4 class="label">Optimizations</h4><ul>
-                <li>Envelope glow made with a Unity Quad and an additive material using a soft-edged rectangle texture, instead of another particle system</li>
-                <li>Particle settings tuned for quality and performance, for example capping max particles to control memory allocation</li>
-                <li>Animations optimized through Unity FBX import settings</li>
-              </ul></div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Friends Invite Badge</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-fx"/></svg>Particle System</summary>
+                <div class="comp-body">Using Unity particle system on a 3D animated object, I achieved the whimsical trail and sparkles seen in the videos above.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Hierarchy">
+              <div class="uwin-tabs"><span class="uwin-tab">Hierarchy</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-scene"/></svg><span class="txt">Friends Invite Badge</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Responsibilities on this project</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">3D models and animations integration</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Building UI prefab hierarchy</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Creating trail and sparkles particle system</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Integrating the VFX in an animation according to a reference video</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Asset Optimization</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Optimizations</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">The envelope glow was created using a Unity Quad and applied an additive Material with a texture featuring a rectangle with soft edges, rather than another particle system.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Optimized the Particle system settings for maximum quality and performance, for example capped max particles to a specific number to optimize memory allocation.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Optimized animations using Unity FBX import settings.</span></div>
+                </details>
+              </div>
             </div>
           </div>
         </article>
 
-        <!-- Chef's Kitchen -->
+        <!-- Crafting Event (Chef's Kitchen) -->
         <article class="feature" aria-labelledby="f2">
+          <div class="feature-head"><span class="dot"></span><h3 id="f2">Crafting Event</h3></div>
           <div class="feature-media">
-            <a class="yt" href="https://www.youtube.com/watch?v=BIEacimK7Lg&amp;t=41" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/BIEacimK7Lg?start=41">
-              <img src="assets/yt-chefs-kitchen.jpg" alt="Chef's Kitchen event start screen" loading="lazy">
-              <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
-              <span class="yt-label">Watch on YouTube</span>
-            </a>
-          </div>
-          <div class="feature-body">
-            <p class="label">Crafting event · UI architecture · logic</p>
-            <h3 id="f2">Chef's Kitchen</h3>
-            <div class="desc">
-              <p>The main UI is a scrollable area of dishes, with the characters and table rendered as 3D elements through a Render Texture. Each dish header has a descriptive image with a light sweep animation, dynamically set rewards and counters, and states for idle, selected, ready to cook and completed.</p>
-              <p>The Pantry combines vertical and horizontal layout groups, with its counter driven by our in-house visual scripting editor. Animations use Timelines and Playable Directors alongside Animators.</p>
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Crafting Event video">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
+                </div>
+                <span class="uwin-tools"><span>YouTube</span></span>
+              </div>
+              <div class="vview" role="tabpanel">
+                <a class="yt" href="https://www.youtube.com/watch?v=BIEacimK7Lg&amp;t=41" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/BIEacimK7Lg?start=41">
+                  <img src="assets/yt-chefs-kitchen.jpg" alt="Chef's Kitchen event start screen" loading="lazy">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Watch on YouTube</span>
+                </a>
+              </div>
+              <div class="wfoot"><span>Crafting Event</span><span><b>Timelines</b> · Playable Directors · Render texture</span></div>
             </div>
-            <div class="inspector" aria-label="Unity components used">
-              <div class="insp-head"><span>Inspector</span><b>ChefsKitchen</b></div>
-              <div class="comp"><span class="tick"></span><b>Scroll Rect</b><span class="prop">Dish list with idle / selected / ready / completed states</span></div>
-              <div class="comp"><span class="tick"></span><b>Render Texture</b><span class="prop">3D characters and table inside the UI</span></div>
-              <div class="comp"><span class="tick"></span><b>Playable Director</b><span class="prop">Timeline-driven sequences</span></div>
-              <div class="comp"><span class="tick"></span><b>Sprite Atlas</b><span class="prop">TexturePacker · per-platform compression</span></div>
             </div>
-            <div class="lists">
-              <div><h4 class="label">Responsibilities</h4><ul>
-                <li>2D and 3D art integration and optimization using Unity import settings</li>
-                <li>Sound integration</li>
-                <li>Feature and prefab UI architecture built for future reskins and modular additions</li>
-                <li>Logic implementation covering 90% of the feature's functionality</li>
-                <li>Animation integration with Animator Controllers and Timelines</li>
-              </ul></div>
-              <div><h4 class="label">Optimizations</h4><ul>
-                <li>Optimized 12 feature reskins for low-end mobile devices using TexturePacker sprite atlases and Unity compression settings for iOS and Android</li>
-              </ul></div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Crafting Event</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-scroll"/></svg>Scroll Rect</summary>
+                <div class="comp-body">The main UI consisted in a scrollable area, and UI elements. The characters and table consisted in 3D elements and a Render texture.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-tex"/></svg>Dish</summary>
+                <div class="comp-body">Each dish (scrollable area header) featured a descriptive image with a light sweep animation, dynamically set rewards and counters, and multiple states such as idle, selected, ready to cook and completed.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-layout"/></svg>Layout Group</summary>
+                <div class="comp-body">The Pantry consists of a combination of vertical and layout groups, and the counter is also dynamically set using the visual scripting in house editor.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-anim"/></svg>Playable Director</summary>
+                <div class="comp-body">All the animations were done using Timelines and Playable Directors, and also Animators and Animations.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Hierarchy">
+              <div class="uwin-tabs"><span class="uwin-tab">Hierarchy</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-scene"/></svg><span class="txt">Crafting Event</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Responsibilities</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">2D and 3D art integration and optimization using Unity Import Settings.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Sound integration.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Feature and prefabs UI architecture, to ensure future reskins and modularity for future feature additions.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Logic implementation handling 90% feature functionality.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Animations integration using Unity Animator Controller and Timelines.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Optimizations</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Optimized 12 feature reskins for low end mobile devices using Texture Packer Sprite Atlases and Unity Compression Format Settings for iOS and Android</span></div>
+                </details>
+              </div>
             </div>
           </div>
         </article>
 
-        <!-- Daily Dish -->
+        <!-- Chef's Kitchen Daily Dish -->
         <article class="feature" aria-labelledby="f3">
+          <div class="feature-head"><span class="dot"></span><h3 id="f3">Chef's Kitchen Daily Dish</h3></div>
           <div class="feature-media">
-            <a class="yt" href="https://www.youtube.com/clip/UgkxkrPZ9fDD2nUtMTyT4k46mW0iIb6kxfXp" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/_FCTfR8Iul8?start=41&amp;clip=UgkxkrPZ9fDD2nUtMTyT4k46mW0iIb6kxfXp&amp;clipt=EOi6CBj1lAo">
-              <img src="assets/yt-daily-dish.jpg" alt="Chef's Kitchen Daily Dish gameplay" loading="lazy">
-              <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
-              <span class="yt-label">Watch clip on YouTube</span>
-            </a>
-          </div>
-          <div class="feature-body">
-            <p class="label">Timed event · layout · UI VFX</p>
-            <h3 id="f3">Chef's Kitchen: Daily Dish</h3>
-            <div class="desc">
-              <p>Daily Dish adds a time-based event on top of the original Chef's Kitchen: a border and bonus rewards on a dish, shown in purple when idle and green when selected.</p>
-              <p>The challenge was getting a horizontal layout group and a content size fitter to scale and animate correctly for however many rewards the monetization team sets. It also introduced a new kind of timer, built with both code and our in-house visual scripting. Sparkles come from the UI particle system.</p>
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Chef's Kitchen Daily Dish video">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
+                </div>
+                <span class="uwin-tools"><span>YouTube</span></span>
+              </div>
+              <div class="vview" role="tabpanel">
+                <a class="yt" href="https://www.youtube.com/clip/UgkxkrPZ9fDD2nUtMTyT4k46mW0iIb6kxfXp" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/_FCTfR8Iul8?start=41&amp;clip=UgkxkrPZ9fDD2nUtMTyT4k46mW0iIb6kxfXp&amp;clipt=EOi6CBj1lAo">
+                  <img src="assets/yt-daily-dish.jpg" alt="Chef's Kitchen Daily Dish gameplay" loading="lazy">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Watch clip on YouTube</span>
+                </a>
+              </div>
+              <div class="wfoot"><span>Chef's Kitchen Daily Dish</span><span><b>Horizontal layout group</b> · content size fitter · UI particle system</span></div>
             </div>
-            <div class="inspector" aria-label="Unity components used">
-              <div class="insp-head"><span>Inspector</span><b>DailyDish</b></div>
-              <div class="comp"><span class="tick"></span><b>Horizontal Layout Group</b><span class="prop">Rewards row, variable count</span></div>
-              <div class="comp"><span class="tick"></span><b>Content Size Fitter</b><span class="prop">Scales and animates with reward count</span></div>
-              <div class="comp"><span class="tick"></span><b>UI Particle System</b><span class="prop">Sparkles</span></div>
-              <div class="comp"><span class="tick"></span><b>Timer</b><span class="prop">C# + visual scripting</span></div>
             </div>
-            <div class="lists single">
-              <div><h4 class="label">Responsibilities</h4><ul>
-                <li>2D art integration following existing sprite atlases, workflows and pipelines</li>
-                <li>Functionality integrated into an existing core logic flow</li>
-                <li>Non-destructive architecture additions, such as adding a timer to a dish</li>
-                <li>Badge functionality, art and animations layered non-destructively over existing systems</li>
-                <li>Effects creation and integration</li>
-              </ul></div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Chef's Kitchen Daily Dish</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-clock"/></svg>Timer</summary>
+                <div class="comp-body">As an additional functionality to the original Chef's Kitchen, the Daily Dish feature added a time based event.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-tex"/></svg>Dish</summary>
+                <div class="comp-body">This consisted of the border and bonus rewards added to a dish, represented by purple - idle and green - selected.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-layout"/></svg>Horizontal Layout Group</summary>
+                <div class="comp-body">The challenge here was to use a horizontal layout group and a content size fitter to properly scale and animate according to the number of rewards given by the monetization team. It also brought to the table a new type of timer freshly implemented on this feature using both code and visual scripting using the in house editor.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-fx"/></svg>UI Particle System</summary>
+                <div class="comp-body">Also added the sparkles made with the help of the UI particle system.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Hierarchy">
+              <div class="uwin-tabs"><span class="uwin-tab">Hierarchy</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-scene"/></svg><span class="txt">Chef's Kitchen Daily Dish</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Responsibilities</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">2D art integration according to existing Sprite Atlases, workflows and pipelines.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Functionality integration inside an already existing core logic flow.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Non destructive architecture additions, for example the time addition on a dish.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Badge functionality, art and animations non destructive integration over already existing systems.</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Effects creation and integration.</span></div>
+                </details>
+              </div>
             </div>
           </div>
         </article>
 
         <!-- Race -->
         <article class="feature" aria-labelledby="f4">
+          <div class="feature-head"><span class="dot"></span><h3 id="f4">Race</h3></div>
           <div class="feature-media">
             <div class="side-shot">
-              <a class="yt" href="https://www.youtube.com/clip/UgkxHn1Qaq0Ciw521dtgbKzMpF2S6uvhQAv5" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/baO8a88Gc0A?start=41&amp;clip=UgkxHn1Qaq0Ciw521dtgbKzMpF2S6uvhQAv5&amp;clipt=EPKYDhj9pQ8">
-                <img src="assets/yt-race.jpg" alt="Cars Race event start screen" loading="lazy">
-                <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
-                <span class="yt-label">Watch clip on YouTube</span>
-              </a>
+              <div class="uwin vwin">
+                <div class="uwin-tabs" role="tablist" aria-label="Race video">
+                  <div class="vtabs">
+                    <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
+                    <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
+                  </div>
+                  <span class="uwin-tools"><span>YouTube</span></span>
+                </div>
+                <div class="vview" role="tabpanel">
+                  <a class="yt" href="https://www.youtube.com/clip/UgkxHn1Qaq0Ciw521dtgbKzMpF2S6uvhQAv5" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/baO8a88Gc0A?start=41&amp;clip=UgkxHn1Qaq0Ciw521dtgbKzMpF2S6uvhQAv5&amp;clipt=EPKYDhj9pQ8">
+                    <img src="assets/yt-race.jpg" alt="Cars Race event start screen" loading="lazy">
+                    <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                    <span class="yt-label">Watch clip on YouTube</span>
+                  </a>
+                </div>
+              <div class="wfoot"><span>Race</span><span><b>Visual scripting</b> · Animators · Timelines · stencil Mask</span></div>
+            </div>
               <img src="assets/race-ui.png" alt="Cars Race leaderboard panel with player avatars and scores" loading="lazy">
             </div>
           </div>
-          <div class="feature-body">
-            <p class="label">Visual scripting · animation timing</p>
-            <h3 id="f4">Race</h3>
-            <div class="desc">
-              <p>The first big feature I worked on as a Technical Artist. It was one of the most challenging, and the one that grew my visual scripting skills the most: <strong>90% of its logic is visual scripting</strong>.</p>
-              <p>It pushed the technical side of my role hardest. The difficult part was timing the cars' animations on the tracks and the chests moving around and opening, all done entirely in visual scripting.</p>
-            </div>
-            <div class="inspector" aria-label="Unity components used">
-              <div class="insp-head"><span>Inspector</span><b>CarsRace</b></div>
-              <div class="comp"><span class="tick"></span><b>Visual Scripting Graph</b><span class="prop">90% of feature logic · car and chest timing</span></div>
-              <div class="comp"><span class="tick"></span><b>Animator + Timeline</b><span class="prop">All race animations</span></div>
-              <div class="comp"><span class="tick"></span><b>UI Particle System</b><span class="prop">Exhaust smoke</span></div>
-              <div class="comp"><span class="tick"></span><b>Stencil Mask</b><span class="prop">Player avatars</span></div>
+          <div class="feature-detail solo">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Race</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-script"/></svg>Visual Scripting</summary>
+                <div class="comp-body">This is the first big feature I have worked on as a Technical Artist. It was one of the most challenging ones but also the one that hugely improved my visual scripting skills since the logic is 90% visual scripting.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-clock"/></svg>Animation Timing</summary>
+                <div class="comp-body">This feature honed mostly the technical part of my role as a Technical Artist and came with a lot of difficulties. Mostly timing the animations for the cars on the tracks and the chests moving around and their opening animations, all this done 100% using visual scripting.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-mask"/></svg>Animators, Particles &amp; Mask</summary>
+                <div class="comp-body">All the animations were done using Animators and Timelines, the smoke using UI Particle System and the avatars using a stencil Mask.</div>
+              </details>
             </div>
           </div>
         </article>
 
-        <!-- Merlin's Potions -->
+        <!-- Merlin's Potions Album -->
         <article class="feature" aria-labelledby="f5">
+          <div class="feature-head"><span class="dot"></span><h3 id="f5">Merlin's Potions Album</h3></div>
           <div class="feature-media">
-            <a class="yt" href="https://www.youtube.com/clip/UgkxPl27G2ryIrxdVvaqRnDiz5T7uPE27gjr" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/IHlITmbB3Bo?start=41&amp;clip=UgkxPl27G2ryIrxdVvaqRnDiz5T7uPE27gjr&amp;clipt=EKTTChi0ngw">
-              <img src="assets/yt-merlins-potions.jpg" alt="Merlin's Potions Album gameplay" loading="lazy">
-              <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
-              <span class="yt-label">Watch clip on YouTube</span>
-            </a>
-          </div>
-          <div class="feature-body">
-            <p class="label">VFX polish · cross-team support</p>
-            <h3 id="f5">Merlin's Potions Album</h3>
-            <div class="desc">
-              <p>I joined Merlin's Potions to help the other teams wrap the feature up ahead of schedule, supporting my fellow Technical Artists with visual improvements and VFX polish. My biggest impact was on text, the small cauldron VFX, scroll views and UI improvements.</p>
-              <p>The challenge was to stay flexible and get comfortable with a new team in a very short timeframe. The result got a lot of positive feedback, which led to me being spread across other teams on the project.</p>
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Merlin's Potions Album video">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
+                </div>
+                <span class="uwin-tools"><span>YouTube</span></span>
+              </div>
+              <div class="vview" role="tabpanel">
+                <a class="yt" href="https://www.youtube.com/clip/UgkxPl27G2ryIrxdVvaqRnDiz5T7uPE27gjr" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/IHlITmbB3Bo?start=41&amp;clip=UgkxPl27G2ryIrxdVvaqRnDiz5T7uPE27gjr&amp;clipt=EKTTChi0ngw">
+                  <img src="assets/yt-merlins-potions.jpg" alt="Merlin's Potions Album gameplay" loading="lazy">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Watch clip on YouTube</span>
+                </a>
+              </div>
+              <div class="wfoot"><span>Merlin's Potions Album</span><span><b>VFX polishing</b> · cauldron VFX · scroll views</span></div>
             </div>
-            <div class="inspector" aria-label="Areas covered">
-              <div class="insp-head"><span>Inspector</span><b>MerlinsPotions</b></div>
-              <div class="comp"><span class="tick"></span><b>Cauldron VFX</b><span class="prop">Small-scale polish</span></div>
-              <div class="comp"><span class="tick"></span><b>Scroll Views</b><span class="prop">Album browsing</span></div>
-              <div class="comp"><span class="tick"></span><b>Text &amp; UI</b><span class="prop">Visual improvements</span></div>
+            </div>
+          <div class="feature-detail solo">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Merlin's Potions Album</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-info"/></svg>Role</summary>
+                <div class="comp-body">My job on this Merlin's Potions was to support the other teams in wrapping up the feature ahead of schedule.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-fx"/></svg>VFX Polish</summary>
+                <div class="comp-body">I came to aid my fellow Technical Artists with visual improvements and VFX polishing, my biggest impact being on texts, small cauldron VFX, scroll views, and UI improvements.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-clock"/></svg>Challenge</summary>
+                <!-- The original text was cut off after "spread across". Ending below is a placeholder to confirm. -->
+                <div class="comp-body">The biggest challenge was to be as flexible as possible and comfortable with a new team in a super short timeframe with a tight driven deadline. The outcome was amazing and received lots of positive feedback over my addition to this feature which eventually led to me being spread across other teams on the project.</div>
+              </details>
             </div>
           </div>
         </article>
@@ -526,18 +690,21 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   <section class="section about" id="about" aria-labelledby="about-h">
     <div class="wrap about-grid">
-      <div class="section-head" style="margin:0">
-        <p class="label">About</p>
-        <h2 id="about-h" class="pull">The bridge between <em>art</em> and <em>tech</em>. Some days, the team's peace keeper.</h2>
-        <div class="disciplines">
-          <span class="chip">QA</span><span class="chip">Dev</span><span class="chip">Art</span><span class="chip">Animation</span><span class="chip">Product</span><span class="chip">Monetization</span>
+      <div class="about-side">
+        <div class="section-head" style="margin:0">
+          <p class="label">About</p>
+          <h2 id="about-h" class="pull">So, in other words, my role was that of a <em>"peace keeper"</em>.</h2>
         </div>
+        <div class="disc-c rwin" aria-label="Disciplines I work with"><div class="rwin-title px"><span>Party</span><span>6/6</span></div><div class="disc-grid"><div class="tile"><b class="px">QA</b><span>QA</span></div><div class="tile"><b class="px">DEV</b><span>Dev</span></div><div class="tile"><b class="px">ART</b><span>Art</span></div><div class="tile"><b class="px">ANI</b><span>Animations</span></div><div class="tile"><b class="px">PRD</b><span>Product</span></div><div class="tile"><b class="px">MON</b><span>Monetization</span></div></div></div>
       </div>
-      <div class="copy">
-        <p>On Disney Solitaire I work hand in hand with QA, Dev, Art, Animation, Product and Monetization. At first that was overwhelming; over time it became second nature. My main job is to <strong>bridge the technical and the artistic side</strong> while understanding what Product and Monetization need.</p>
-        <p>I started on a small team of one Technical Artist, two QA, one Dev and one Product. As my skills grew I got to work with every team on the project and take part in many more features, which taught me a lot about teamwork, people management and Tech Art.</p>
-        <p>Working on an Agile timeline with short, tight deadlines, I learned to manage my time well and make technical decisions that keep deliverables to the highest standard: running smoothly and looking as whimsical as possible.</p>
-        <p>Beyond the technical skills, this project taught me to understand every job family and build the synergy between departments that gets each feature the best outcome.</p>
+      <div class="rwin about-card">
+        <div class="rwin-title px"><span>about_me.txt</span><span>Eva Bulai</span></div>
+        <div class="about-body">
+        <p>I had the opportunity to work hand in hand with QA, Dev, Art, Animations, Product, Monetization departments which at first was overwhelming but as time went by it felt like second nature. Besides other attributes as a Technical Artist, the main objective was to be a bridge between the technical side and the artistic side, while also understanding Product and Monetization needs.</p>
+        <p>At first I was assigned to a team consisting in 1 Technical Artist, 2 QA, 1 Dev and 1 Product; but as I further improved my skills I got the amazing opportunity to work hand in hand with all the teams on the project and be part of multiple other features, which proved to be a great experience in terms of team work, people management and Tech Art expertise.</p>
+        <p>Working with an Agile timeline, with short tight deadlines, I quickly learned how to manage my time efficiently, take the best technical decisions so the deliverables would be to the highest standard possible, work smoothly and look as whimsical and amazing as possible.</p>
+        <p>Overall, besides the technical skills, this project taught me how to understand all job families, and how to create a synergy between departments to get the best outcome possible for each feature developed.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -546,11 +713,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div class="wrap">
       <p class="label">Contact</p>
       <h2 id="contact-h">Let's make something <em>sparkle</em>.</h2>
-      <p style="color:var(--muted);max-width:36em">Open to conversations about Unity Technical Art, VFX and UI work.</p>
+      <p style="color:var(--muted);max-width:36em;font-size:1.0625rem">Open to conversations about Unity Technical Art, VFX and UI work.</p>
       <div class="contact-rows">
-        <!-- TODO: replace with your real email and LinkedIn -->
-        <span class="btn btn-ghost todo">your-email@example.com</span>
-        <span class="btn btn-ghost todo">LinkedIn link</span>
+        <a class="btn btn-primary" href="mailto:bubumetal99@gmail.com">bubumetal99@gmail.com</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/eva-bulai-979392194/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
@@ -559,7 +725,6 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 <footer>
   <div class="wrap">
     <span>© 2026 Eva Bulai</span>
-    <span>Disney Solitaire is developed by Superplay. Artwork © Disney.</span>
   </div>
 </footer>
 
@@ -582,6 +747,54 @@ if (EMBED_YOUTUBE) {
     }, { once: true });
   });
 }
+
+// Hierarchy: click a row to select it, like in the Unity editor
+document.querySelectorAll('.hierarchy').forEach(win => {
+  win.addEventListener('click', e => {
+    const row = e.target.closest('.h-row');
+    if (!row) return;
+    win.querySelectorAll('.h-row.sel').forEach(r => r.classList.remove('sel'));
+    row.classList.add('sel');
+  });
+});
+
+// Bottom description bars for Inspector and Hierarchy windows (name + count)
+document.querySelectorAll('.uwin.inspector, .uwin.hierarchy').forEach(win => {
+  const isInsp = win.classList.contains('inspector');
+  const name = win.querySelector(isInsp ? '.go-head .wfield' : '.h-row.scene .txt')?.textContent || '';
+  const n = win.querySelectorAll(isInsp ? '.comp' : '.h-row.leaf').length;
+  const foot = document.createElement('div');
+  foot.className = 'wfoot';
+  foot.innerHTML = `<span></span><span><b>${n}</b> ${isInsp ? (n === 1 ? 'component' : 'components') : (n === 1 ? 'item' : 'items')}</span>`;
+  foot.firstChild.textContent = name;
+  win.appendChild(foot);
+});
+
+// Game / Scene tabs: switch between the two videos of a feature
+const PAUSE_SVG = '<rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/>';
+const PLAY_SVG = '<path d="M1 0l9 5-9 5z"/>';
+document.querySelectorAll('.vwin').forEach(win => {
+  const tabs = [...win.querySelectorAll('.vtab[aria-controls]:not(:disabled)')];
+  const btn = win.querySelector('.vplay');
+  const current = () => win.querySelector('.vview:not([hidden]) video');
+  const setBtn = playing => { if (!btn) return; btn.querySelector('svg').innerHTML = playing ? PAUSE_SVG : PLAY_SVG; btn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video'); };
+  if (btn) {
+    if (reduceMotion) setBtn(false);
+    btn.addEventListener('click', () => { const v = current(); if (!v) return; if (v.paused) { v.play().catch(() => {}); setBtn(true); } else { v.pause(); setBtn(false); } });
+  }
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    setBtn(!reduceMotion);
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      const panel = document.getElementById(t.getAttribute('aria-controls'));
+      panel.hidden = !on;
+      const v = panel.querySelector('video');
+      if (!v) return;
+      if (on && !reduceMotion) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); }
+    });
+  }));
+});
 
 // Videos: respect reduced motion; hero play/pause
 const heroVideo = document.getElementById('heroVideo');
@@ -608,6 +821,10 @@ heroToggle.addEventListener('click', () => {
   if (!canvas || reduceMotion) return;
   const ctx = canvas.getContext('2d');
   const MAX = 120;
+  let SPARK = [];
+  const readSpark = () => { const cs = getComputedStyle(document.documentElement); SPARK = [cs.getPropertyValue('--spark-a').trim(), cs.getPropertyValue('--spark-b').trim()]; };
+  readSpark();
+  window.addEventListener('palettechange', readSpark);
   const parts = [];
   let w = 0, h = 0, dpr = 1, pointer = null, running = true;
   function resize() {
@@ -619,7 +836,7 @@ heroToggle.addEventListener('click', () => {
   function emit(x, y, burst) {
     if (parts.length >= MAX) return;
     const a = Math.random() * Math.PI * 2, s = burst ? 0.6 + Math.random() * 1.4 : 0.15 + Math.random() * 0.25;
-    parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - (burst ? 0.3 : 0.15), life: 1, decay: 0.008 + Math.random() * 0.014, r: 0.8 + Math.random() * 1.8, gold: Math.random() < 0.75 });
+    parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - (burst ? 0.3 : 0.15), life: 1, decay: 0.008 + Math.random() * 0.014, r: 0.8 + Math.random() * 1.8, pink: Math.random() < 0.6 });
   }
   const hero = canvas.parentElement;
   hero.addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); pointer = { x: e.clientX - r.left, y: e.clientY - r.top }; });
@@ -634,7 +851,7 @@ heroToggle.addEventListener('click', () => {
       const p = parts[i];
       p.x += p.vx; p.y += p.vy; p.vy += 0.004; p.life -= p.decay;
       if (p.life <= 0) { parts.splice(i, 1); continue; }
-      const col = p.gold ? '242,196,109' : '141,224,220';
+      const col = p.pink ? SPARK[0] : SPARK[1];
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
       g.addColorStop(0, `rgba(${col},${0.9 * p.life})`);
       g.addColorStop(1, `rgba(${col},0)`);
