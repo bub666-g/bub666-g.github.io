@@ -224,9 +224,17 @@ p { margin: 0; }
 .drawer-count { font-size: 0.8125rem; font-weight: 700; padding: 4px 10px; border-radius: 7px; background: var(--w-field); border: 1.5px solid var(--w-line); white-space: nowrap; }
 .drawer-toggle { display: flex; align-items: center; gap: 8px; font-family: "Press Start 2P", ui-monospace, monospace; font-size: 9px; line-height: 1; padding: 9px 11px; background: var(--accent); border: 2px solid var(--w-line); border-radius: 6px; white-space: nowrap; }
 .drawer-toggle .ic { width: 12px; height: 12px; stroke-width: 2.4; transition: transform .2s ease; }
-.drawer[open] .drawer-toggle .ic { transform: rotate(90deg); }
-.drawer .t-close, .drawer[open] .t-open { display: none; }
-.drawer[open] .t-close { display: inline; }
+.drawer[open] > summary .drawer-toggle .ic { transform: rotate(90deg); }
+.drawer .t-close, .drawer[open] > summary .t-open { display: none; }
+.drawer[open] > summary .t-close { display: inline; }
+/* Back up button: shows after scrolling deep into the work section */
+.to-top { position: fixed; right: max(18px, env(safe-area-inset-right, 0px)); bottom: max(18px, env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; align-items: center; gap: 8px; font-family: "Press Start 2P", ui-monospace, monospace; font-size: 10px; line-height: 1; color: var(--w-ink); background: var(--accent); border: 2px solid var(--w-line); border-radius: 8px; padding: 12px 14px; box-shadow: 4px 4px 0 var(--accent-2); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s, box-shadow .12s ease; }
+.to-top.show { opacity: 1; visibility: visible; transform: none; transition: opacity .2s ease, transform .2s ease, visibility 0s, box-shadow .12s ease; }
+.to-top.show:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-2); }
+.to-top.show:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--accent-2); }
+.to-top:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+.to-top svg { width: 12px; height: 12px; fill: currentColor; }
+@media (prefers-reduced-motion: reduce) { .to-top, .to-top.show { transition: none; } }
 .drawer-body { padding-top: clamp(44px, 6vw, 72px); padding-bottom: clamp(24px, 4vw, 48px); }
 .drawer-body > .project-banner { scroll-margin-top: 90px; }
 .drawer { scroll-margin-top: 80px; }
@@ -1326,6 +1334,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </section>
 </main>
 
+<button class="to-top" type="button" aria-label="Back up to Work and personal projects"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1l4.5 6h-9z"/></svg>Back up</button>
+
 <footer>
   <div class="wrap">
     <span>© 2026 Eva Bulai</span>
@@ -1366,6 +1376,22 @@ document.querySelectorAll('a[href^="#work-"]').forEach(a => a.addEventListener('
 }));
 if (location.hash.startsWith('#work-')) openDrawer(location.hash.slice(1));
 window.addEventListener('hashchange', () => { if (location.hash.startsWith('#work-')) openDrawer(location.hash.slice(1)); });
+
+// Back up button: appears once you've scrolled well into the work section, returns to the dropdowns
+const toTop = document.querySelector('.to-top');
+const workSec = document.getElementById('work');
+if (toTop && workSec) {
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const past = window.scrollY - (workSec.getBoundingClientRect().top + window.scrollY);
+    toTop.classList.toggle('show', past > window.innerHeight * 1.5);
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  toTop.addEventListener('click', () => workSec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
+  update();
+}
 
 // Hierarchy: click a row to select it, like in the Unity editor
 document.querySelectorAll('.hierarchy').forEach(win => {
