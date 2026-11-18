@@ -940,14 +940,27 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <div class="feature-head"><span class="dot"></span><h3 id="sw3">Wanted System &amp; Ambient Life</h3></div>
           <div class="feature-media">
             <div class="uwin vwin">
-              <div class="uwin-tabs" role="tablist" aria-label="Wanted System &amp; Ambient Life media">
+              <div class="uwin-tabs" role="tablist" aria-label="Wanted System &amp; Ambient Life videos">
                 <div class="vtabs">
-                  <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
-                  <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="sw3-wanted">Wanted System</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="sw3-ambient">Ambient Life</button>
                 </div>
-                <span class="uwin-tools"><span>Snowdrop</span></span>
+                <span class="uwin-tools"><span>YouTube</span></span>
               </div>
-              <div class="vview" role="tabpanel"><div class="ph-art ph-view" role="img" aria-label="Footage coming soon"><span>Footage coming soon</span></div></div>
+              <div class="vview" id="sw3-wanted" role="tabpanel">
+                <a class="yt" href="https://www.youtube.com/watch?v=dsqvrBA3HuE&amp;t=17" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/dsqvrBA3HuE?start=17">
+                  <img src="https://i.ytimg.com/vi/dsqvrBA3HuE/hqdefault.jpg" alt="Star Wars Outlaws Wanted System gameplay" loading="lazy" onerror="this.onerror=null;this.src='assets/work/star-wars-outlaws.webp'">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Wanted System · Watch on YouTube</span>
+                </a>
+              </div>
+              <div class="vview" id="sw3-ambient" role="tabpanel" hidden>
+                <a class="yt" href="https://www.youtube.com/watch?v=52tcW3S546E&amp;t=23" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/52tcW3S546E?start=23">
+                  <img src="https://i.ytimg.com/vi/52tcW3S546E/hqdefault.jpg" alt="Star Wars Outlaws ambient life and crowds" loading="lazy" onerror="this.onerror=null;this.src='assets/work/star-wars-outlaws.webp'">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Ambient Life · Watch on YouTube</span>
+                </a>
+              </div>
               <div class="wfoot"><span>Wanted System &amp; Ambient Life</span><span><b>Systems</b> · Crowd Life · Kijimi</span></div>
             </div>
           </div>
@@ -1662,6 +1675,8 @@ document.querySelectorAll('.vwin').forEach(win => {
       t.setAttribute('aria-selected', String(on));
       const panel = document.getElementById(t.getAttribute('aria-controls'));
       panel.hidden = !on;
+      const yt = panel.querySelector('.yt iframe');
+      if (yt && !on) yt.src = yt.src.replace('autoplay=1', 'autoplay=0');
       const v = panel.querySelector('video');
       if (!v) return;
       if (on && !reduceMotion) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); }
