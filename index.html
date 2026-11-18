@@ -210,6 +210,35 @@ p { margin: 0; }
 .side-shot { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 14px; align-items: center; }
 .side-shot img { width: 100%; border: 2px solid var(--w-line); border-radius: 12px; box-shadow: 4px 4px 0 var(--accent-2); }
 
+/* Work dropdowns: Work and Personal Work, closed until clicked */
+.drawer + .drawer { margin-top: 22px; }
+.drawer > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 18px; align-items: center; padding: 12px 16px 12px 12px; background: var(--w-body); color: var(--w-ink); border: 2px solid var(--w-line); border-radius: 12px; box-shadow: 4px 4px 0 var(--accent-2); transition: transform .12s ease, box-shadow .12s ease; }
+.drawer > summary::-webkit-details-marker { display: none; }
+.drawer > summary:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-2); }
+.drawer > summary:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--accent-2); }
+.drawer > summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.drawer-thumb { width: 168px; aspect-ratio: 16 / 9; object-fit: cover; border: 2px solid var(--w-line); border-radius: 8px; }
+.drawer-text { display: grid; gap: 4px; min-width: 0; }
+.drawer-title { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.drawer-sub { font-size: 0.9375rem; font-weight: 500; color: var(--w-soft); }
+.drawer-count { font-size: 0.8125rem; font-weight: 700; padding: 4px 10px; border-radius: 7px; background: var(--w-field); border: 1.5px solid var(--w-line); white-space: nowrap; }
+.drawer-toggle { display: flex; align-items: center; gap: 8px; font-family: "Press Start 2P", ui-monospace, monospace; font-size: 9px; line-height: 1; padding: 9px 11px; background: var(--accent); border: 2px solid var(--w-line); border-radius: 6px; white-space: nowrap; }
+.drawer-toggle .ic { width: 12px; height: 12px; stroke-width: 2.4; transition: transform .2s ease; }
+.drawer[open] .drawer-toggle .ic { transform: rotate(90deg); }
+.drawer .t-close, .drawer[open] .t-open { display: none; }
+.drawer[open] .t-close { display: inline; }
+.drawer-body { padding-top: clamp(44px, 6vw, 72px); padding-bottom: clamp(24px, 4vw, 48px); }
+.drawer-body > .project-banner { scroll-margin-top: 90px; }
+.drawer { scroll-margin-top: 80px; }
+#work { scroll-margin-top: 72px; }
+@media (max-width: 700px) {
+  .drawer > summary { grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; }
+  .drawer-thumb { width: 84px; }
+  .drawer-count { display: none; }
+  .drawer-toggle { padding: 8px; }
+  .drawer-toggle span { display: none !important; }
+}
+
 /* Personal Work: image views inside the Game window + project number tag */
 .vview .art { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #14123a; }
 .vtabs { flex-wrap: wrap; }
@@ -358,8 +387,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <div class="wrap">
     <a class="wordmark" href="#top">Eva Bulai<span>.</span></a>
     <nav class="nav" aria-label="Main">
-      <a href="#work">Job<span class="nav-long"> Work</span></a>
-      <a href="#personal">Personal<span class="nav-long"> Work</span></a>
+      <a href="#work-job">Work</a>
+      <a href="#work-personal">Personal<span class="nav-long"> Work</span></a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -423,13 +452,21 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     </div>
   </section>
 
-  <section class="section" id="work" aria-labelledby="work-h" style="padding-top:0">
+  <section class="section" id="work" aria-labelledby="work-title" style="padding-top:0">
     <div class="wrap">
       <div class="section-head">
-        <p class="label">Job Work</p>
-        <h2>Features I <b>shipped</b></h2>
+        <p class="label">Selected work</p>
+        <h2 id="work-title">Work &amp; <b>personal projects</b></h2>
       </div>
 
+      <details class="drawer" id="work-job">
+        <summary>
+          <img class="drawer-thumb" src="assets/hero.jpg" alt="">
+          <span class="drawer-text"><span class="drawer-title">Work</span><span class="drawer-sub">Disney Solitaire · Unity Technical Artist at Superplay</span></span>
+          <span class="drawer-count">5 features</span>
+          <span class="drawer-toggle"><svg class="ic"><use href="#i-fold"/></svg><span class="t-open">Open</span><span class="t-close">Close</span></span>
+        </summary>
+        <div class="drawer-body">
       <div class="project-banner">
         <div class="rwin-title px"><span>disney_solitaire.unity</span><span>Superplay</span></div>
         <img src="assets/hero.jpg" alt="Disney Solitaire key art with Disney and Pixar characters around the game logo">
@@ -697,16 +734,17 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         </article>
 
       </div>
-    </div>
-  </section>
+        </div>
+      </details>
 
-    <section class="section" id="personal" aria-labelledby="personal-h">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="label">Personal Work</p>
-        <h2>Projects I <b>made</b></h2>
-      </div>
-
+      <details class="drawer" id="work-personal">
+        <summary>
+          <img class="drawer-thumb" src="assets/personal/banner.webp" alt="">
+          <span class="drawer-text"><span class="drawer-title">Personal Work</span><span class="drawer-sub">Adobe Creative Suite course · Local Design Circle</span></span>
+          <span class="drawer-count">8 projects</span>
+          <span class="drawer-toggle"><svg class="ic"><use href="#i-fold"/></svg><span class="t-open">Open</span><span class="t-close">Close</span></span>
+        </summary>
+        <div class="drawer-body">
       <div class="project-banner">
         <div class="rwin-title px"><span>adobe_creative_suite.course</span><span>Local Design Circle</span></div>
         <img src="assets/personal/banner.webp" alt="Detail of my vector illustration: a symmetrical cat figure with a third eye, in purple, coral and yellow gradients">
@@ -1153,6 +1191,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         </article>
 
       </div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -1215,6 +1255,20 @@ if (EMBED_YOUTUBE) {
     }, { once: true });
   });
 }
+
+// Work dropdowns: menu links (and #work-job / #work-personal in the address) open their dropdown
+function openDrawer(id) {
+  const d = document.getElementById(id);
+  if (!d || d.tagName !== 'DETAILS') return false;
+  d.open = true;
+  d.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  return true;
+}
+document.querySelectorAll('a[href^="#work-"]').forEach(a => a.addEventListener('click', e => {
+  if (openDrawer(a.getAttribute('href').slice(1))) { e.preventDefault(); history.replaceState(null, '', a.getAttribute('href')); }
+}));
+if (location.hash.startsWith('#work-')) openDrawer(location.hash.slice(1));
+window.addEventListener('hashchange', () => { if (location.hash.startsWith('#work-')) openDrawer(location.hash.slice(1)); });
 
 // Hierarchy: click a row to select it, like in the Unity editor
 document.querySelectorAll('.hierarchy').forEach(win => {
