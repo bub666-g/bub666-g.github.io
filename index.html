@@ -996,14 +996,27 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <div class="feature-head"><span class="dot"></span><h3 id="sw4">Camps, Compounds &amp; Hidden Locations</h3></div>
           <div class="feature-media">
             <div class="uwin vwin">
-              <div class="uwin-tabs" role="tablist" aria-label="Camps, Compounds &amp; Hidden Locations media">
+              <div class="uwin-tabs" role="tablist" aria-label="Camps videos">
                 <div class="vtabs">
-                  <button class="vtab" type="button" role="tab" aria-selected="true">Game</button>
-                  <button class="vtab" type="button" role="tab" aria-selected="false" disabled>Scene</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="sw4-camp1">Camp 1</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="sw4-camp2">Camp 2</button>
                 </div>
-                <span class="uwin-tools"><span>Snowdrop</span></span>
+                <span class="uwin-tools"><span>YouTube</span></span>
               </div>
-              <div class="vview" role="tabpanel"><div class="ph-art ph-view" role="img" aria-label="Footage coming soon"><span>Footage coming soon</span></div></div>
+              <div class="vview" id="sw4-camp1" role="tabpanel">
+                <a class="yt" href="https://www.youtube.com/watch?v=E0DHGezLS8E&amp;t=14" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/E0DHGezLS8E?start=14">
+                  <img src="https://i.ytimg.com/vi/E0DHGezLS8E/hqdefault.jpg" alt="Star Wars Outlaws hostile camp gameplay" loading="lazy" onerror="this.onerror=null;this.src='assets/work/star-wars-outlaws.webp'">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Camp 1 · Watch on YouTube</span>
+                </a>
+              </div>
+              <div class="vview" id="sw4-camp2" role="tabpanel" hidden>
+                <a class="yt" href="https://www.youtube.com/watch?v=yE7UxJ-i_-c&amp;t=1394" target="_blank" rel="noopener" data-embed="https://www.youtube.com/embed/yE7UxJ-i_-c?start=1394">
+                  <img src="https://i.ytimg.com/vi/yE7UxJ-i_-c/hqdefault.jpg" alt="Star Wars Outlaws enemy camp gameplay" loading="lazy" onerror="this.onerror=null;this.src='assets/work/star-wars-outlaws.webp'">
+                  <span class="play"><svg viewBox="0 0 10 10"><path d="M1 0l9 5-9 5z"/></svg></span>
+                  <span class="yt-label">Camp 2 · Watch on YouTube</span>
+                </a>
+              </div>
               <div class="wfoot"><span>Camps, Compounds &amp; Hidden Locations</span><span><b>Open-world spaces</b> · enemy camps · secrets</span></div>
             </div>
           </div>
