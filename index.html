@@ -197,6 +197,7 @@ p { margin: 0; }
 .section-head { display: grid; gap: 12px; margin-bottom: clamp(28px, 4vw, 44px); max-width: 44em; }
 .section-head h2 { font-size: var(--step-3); }
 .section-head h2 b { color: var(--accent-2); font-weight: inherit; }
+.section-head h2 em, .project-intro h2 em { font-style: normal; color: var(--accent); }
 
 /* Toolkit: retro window cards, same outline + hard shadow as the buttons */
 .toolkit { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
@@ -218,6 +219,7 @@ p { margin: 0; }
 .project-meta b { font-weight: 700; }
 .project-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); margin-top: 40px; }
 .project-intro h2 { font-size: var(--step-3); }
+.project-intro h2 b { color: var(--accent-2); font-weight: inherit; }
 .project-intro .copy { display: grid; gap: 14px; color: var(--muted); max-width: 36em; font-size: 1.0625rem; }
 .project-intro .copy strong { color: var(--text); font-weight: 700; }
 
@@ -510,7 +512,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     <div class="wrap">
       <div class="section-head">
         <p class="label">Selected work</p>
-        <h2 id="work-title">Work &amp; <b>personal projects</b></h2>
+        <h2 id="work-title"><em>Work</em> &amp; personal <b>projects</b></h2>
       </div>
 
       <details class="drawer" id="work-job">
@@ -541,7 +543,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </div>
 
       <div class="project-intro">
-        <h2 id="work-h">Disney Solitaire</h2>
+        <h2 id="work-h"><em>Disney</em> <b>Solitaire</b></h2>
         <div class="copy">
           <p>I joined Superplay in 2024 and started off with a Unity Technical Artist bootcamp where all the pipelines and techniques were in depth presented and explained, and also got to do a lot of exercises of what a Technical Artist at Superplay would do on a daily basis.</p>
           <p>A month later I joined <strong>Disney Solitaire</strong> as a Unity Technical Artist and that's where the magic began.</p>
@@ -819,7 +821,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </div>
 
       <div class="project-intro">
-        <h2 id="swo-h">Star Wars Outlaws</h2>
+        <h2 id="swo-h"><em>Star</em> Wars <b>Outlaws</b></h2>
         <div class="copy">
           <p>From February 2023 to September 2024 I was a Level Designer at Ubisoft Romania on <strong>Star Wars Outlaws</strong>, an open-world AAA game built in the Snowdrop engine.</p>
           <p>My work covered the whole level design loop, from prototyping and documentation to implementation, iteration and playtesting, together with artists, animators and mission designers.</p>
