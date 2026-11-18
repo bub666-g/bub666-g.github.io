@@ -108,7 +108,8 @@ p { margin: 0; }
 .wordmark { font-weight: 900; font-size: 1.1875rem; text-decoration: none; letter-spacing: -0.02em; }
 .wordmark span { color: var(--accent); }
 .nav { display: flex; gap: 24px; font-size: 0.9375rem; font-weight: 600; }
-.nav a { text-decoration: none; color: var(--muted); }
+.nav a { text-decoration: none; color: var(--muted); white-space: nowrap; }
+.wordmark { white-space: nowrap; }
 .nav a:hover { color: var(--text); }
 
 /* Hero */
@@ -209,6 +210,11 @@ p { margin: 0; }
 .side-shot { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 14px; align-items: center; }
 .side-shot img { width: 100%; border: 2px solid var(--w-line); border-radius: 12px; box-shadow: 4px 4px 0 var(--accent-2); }
 
+/* Personal Work: image views inside the Game window + project number tag */
+.vview .art { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #14123a; }
+.vtabs { flex-wrap: wrap; }
+.proj-tag { margin-left: auto; flex: none; font-family: "Press Start 2P", ui-monospace, monospace; font-size: 9px; line-height: 1; padding: 7px 9px; color: var(--w-ink); background: var(--accent-2); border: 2px solid var(--w-line); border-radius: 6px; box-shadow: 3px 3px 0 var(--accent); }
+
 /* YouTube facade */
 .yt { position: relative; display: block; border-radius: var(--radius); overflow: hidden; background: #000; aspect-ratio: 16 / 9; text-decoration: none; }
 .yt img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease, opacity .3s; opacity: .9; }
@@ -305,7 +311,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .project-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
-  .nav { gap: 16px; font-size: 0.875rem; }
+  .nav { gap: 14px; font-size: 0.875rem; }
+  .nav .nav-long { display: none; }
   .duo, .sheet { grid-template-columns: minmax(0, 1fr); }
   .gv-tab:not(.on) { display: none; }
   .h-row { padding-left: calc(8px + var(--d, 0) * 12px); }
@@ -340,6 +347,10 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <symbol id="i-mask" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><circle cx="8" cy="8" r="3.2"/></symbol>
   <symbol id="i-game" viewBox="0 0 16 16"><path d="M5 5h6a3.5 3.5 0 0 1 3.4 4.3l-.5 2.1a1.6 1.6 0 0 1-2.7.8L9.6 10.6H6.4l-1.6 1.6a1.6 1.6 0 0 1-2.7-.8l-.5-2.1A3.5 3.5 0 0 1 5 5z"/><path d="M5 7v2M4 8h2M10.5 7.5v.01M11.8 8.7v.01"/></symbol>
   <symbol id="i-grid" viewBox="0 0 16 16"><path d="M5.5 2v12M10.5 2v12M2 5.5h12M2 10.5h12"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 16 16"><path d="M2 4.2h4.2l1.4 1.5H14v6.8H2z"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 16 16"><path d="M8 2l4 5-4 7-4-7z"/><circle cx="8" cy="8" r="1"/><path d="M8 2v5"/></symbol>
+  <symbol id="i-type" viewBox="0 0 16 16"><path d="M3 4V3h10v1M8 3v10M6 13h4"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 16 16"><path d="M8 2s4.5 4.6 4.5 7.5a4.5 4.5 0 0 1-9 0C3.5 6.6 8 2 8 2z"/></symbol>
 </svg>
 <div class="space" aria-hidden="true"></div>
 
@@ -347,7 +358,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <div class="wrap">
     <a class="wordmark" href="#top">Eva Bulai<span>.</span></a>
     <nav class="nav" aria-label="Main">
-      <a href="#work">Work</a>
+      <a href="#work">Job<span class="nav-long"> Work</span></a>
+      <a href="#personal">Personal<span class="nav-long"> Work</span></a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -414,7 +426,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   <section class="section" id="work" aria-labelledby="work-h" style="padding-top:0">
     <div class="wrap">
       <div class="section-head">
-        <p class="label">Selected work</p>
+        <p class="label">Job Work</p>
         <h2>Features I <b>shipped</b></h2>
       </div>
 
@@ -680,6 +692,462 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
                 <!-- The original text was cut off after "spread across". Ending below is a placeholder to confirm. -->
                 <div class="comp-body">The biggest challenge was to be as flexible as possible and comfortable with a new team in a super short timeframe with a tight driven deadline. The outcome was amazing and received lots of positive feedback over my addition to this feature which eventually led to me being spread across other teams on the project.</div>
               </details>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+    <section class="section" id="personal" aria-labelledby="personal-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">Personal Work</p>
+        <h2>Projects I <b>made</b></h2>
+      </div>
+
+      <div class="project-banner">
+        <div class="rwin-title px"><span>adobe_creative_suite.course</span><span>Local Design Circle</span></div>
+        <img src="assets/personal/banner.webp" alt="Detail of my vector illustration: a symmetrical cat figure with a third eye, in purple, coral and yellow gradients">
+        <div class="project-meta">
+          <div><span class="label">Course</span><b>Adobe Creative Suite</b></div>
+          <div><span class="label">Led by</span><b>Artemisa Pascu &amp; Andrei Grosu</b></div>
+          <div><span class="label">When</span><b>Spring 2026</b></div>
+          <div><span class="label">Tools</span><b>Photoshop, Illustrator &amp; InDesign</b></div>
+        </div>
+      </div>
+
+      <div class="project-intro">
+        <h2 id="personal-h">Adobe Creative Suite</h2>
+        <div class="copy">
+          <p>In spring 2026 I took an Adobe Creative Suite course led by Artemisa Pascu and Andrei Grosu of <strong>Local Design Circle</strong>, going from beginner to junior level in Photoshop, Illustrator and InDesign.</p>
+          <p>My day to day is spent inside Unity, so I wanted to go back to the 2D fundamentals behind every asset I integrate: vector construction, photo editing and colour grading, typography and editorial layout.</p>
+          <p>Each homework came with a brief. Here are the projects I made:</p>
+        </div>
+      </div>
+
+      <div class="features">
+
+        <!-- Project 01: Vector Icon Set -->
+        <article class="feature" aria-labelledby="p1">
+          <div class="feature-head"><span class="dot"></span><h3 id="p1">Vector Icon Set</h3><span class="proj-tag">Project 01</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Vector Icon Set images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true">Icon Set</button>
+                </div>
+                <span class="uwin-tools"><span>Illustrator</span></span>
+              </div>
+              <div class="vview" role="tabpanel"><img class="art" src="assets/personal/t1-icons.webp" alt="Five vector icons: a purple mech, a horned mask, a potion pot, a jester and a reaper" loading="lazy"></div>
+              <div class="wfoot"><span>Vector Icon Set</span><span><b>Pen Tool</b> · Shape Builder · flat colour</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Vector Icon Set</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-grid"/></svg>Style Guide</summary>
+                <div class="comp-body">Before drawing anything, I set a few rules for the whole set: bold outlines, flat fills, rounded corners and a shared palette, so the five icons read as one family.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-pen"/></svg>Construction</summary>
+                <div class="comp-body">Each icon started from simple primitives combined with the Shape Builder and Pathfinder, then refined with the Pen Tool into clean, scalable paths.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-game"/></svg>Readability</summary>
+                <div class="comp-body">Coming from game UI, I designed each icon silhouette first, so it still reads at small sizes, exactly what an icon needs in a HUD or a shop screen.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Vector Icon Set</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Create a series of 5 vector icons with a coherent style and clean linework.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Pen Tool, Shape Builder and Pathfinder</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Consistent outline and flat fill style across the set</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Shared, limited colour palette</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Silhouette-first design for small-size readability</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 02: Vector Illustration -->
+        <article class="feature" aria-labelledby="p2">
+          <div class="feature-head"><span class="dot"></span><h3 id="p2">Vector Illustration</h3><span class="proj-tag">Project 02</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Vector Illustration images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true">Illustration</button>
+                </div>
+                <span class="uwin-tools"><span>Illustrator</span></span>
+              </div>
+              <div class="vview" role="tabpanel"><img class="art" src="assets/personal/t2-illustration.webp" alt="Retro psychedelic vector illustration of a cat figure holding two meteorites, in purple, coral and yellow gradients" loading="lazy"></div>
+              <div class="wfoot"><span>Vector Illustration</span><span><b>Pen Tool</b> · Blend Tool · gradients</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Vector Illustration</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-grid"/></svg>Composition</summary>
+                <div class="comp-body">A retro psychedelic illustration of a cat figure holding two meteorites. I built it on a mirrored, symmetrical composition and broke the symmetry in the middle with the third eye and the sharp shapes behind it, so the focal point stays in the center.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-pen"/></svg>Pen Tool</summary>
+                <div class="comp-body">Every shape, from the fluid background waves to the hands, was drawn as a vector path with the Pen Tool.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-layout"/></svg>Blend Tool</summary>
+                <div class="comp-body">I used the Blend Tool to generate the stepped rings inside the eye and the ridges on the meteorite handles, adding depth while staying 100% vector.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-drop"/></svg>Gradients</summary>
+                <div class="comp-body">I combined linear, radial and freeform (points) gradients for a smooth and harmonious colour blend across the whole piece.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Vector Illustration</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Create a simple vector illustration using the Pen Tool, Blend and Gradients.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Mirrored symmetry with an asymmetric focal accent</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Pen Tool path construction</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Blend Tool stepped shapes</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Linear, radial and freeform gradients</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 03: Album Artworks -->
+        <article class="feature" aria-labelledby="p3">
+          <div class="feature-head"><span class="dot"></span><h3 id="p3">Album Artworks</h3><span class="proj-tag">Project 03</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Album Artworks images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="p3-0">Vaporwave</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p3-1">Mantis</button>
+                </div>
+                <span class="uwin-tools"><span>Photoshop</span></span>
+              </div>
+              <div class="vview" id="p3-0" role="tabpanel"><img class="art" src="assets/personal/t4-cat.webp" alt="Vaporwave album artwork: a neon-graded cat next to a glowing phone booth, Japanese type and a wall of old cellphones" loading="lazy"></div>
+              <div class="vview" id="p3-1" role="tabpanel" hidden><img class="art" src="assets/personal/t4-mantis.webp" alt="Aggressive album artwork: a praying mantis with a fiery spit, barbed wire, orchids and liquid colour" loading="lazy"></div>
+              <div class="wfoot"><span>Album Artworks</span><span><b>Photo compositing</b> · Levels · colour grading</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Album Artworks</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-info"/></svg>Concept</summary>
+                <div class="comp-body">Two album artworks, each one combining several photos into a single composition. The first one started from a retro, melancholic vaporwave mood, the second one from something much more aggressive.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-drop"/></svg>Colour Grading</summary>
+                <div class="comp-body">On the vaporwave piece I pushed Levels on my cat to get the neon colours, then again on the phone booth to give its interior an unnatural, cyberpunk glow. For the mantis I used Levels, Hue/Saturation and contrast for an aggressive colour look.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-scene"/></svg>Compositing</summary>
+                <div class="comp-body">Old cellphones under a pastel overlay became the background, keeping the colour theme while making the subjects pop, and a few odd figures behind the phone booth add an accent. For the mantis, I smudged a church and turned it into the mantis&#x27; fire spit, with barbed wire brushes enhancing the metal look.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-type"/></svg>Typography</summary>
+                <div class="comp-body">Japanese type in pastel colours enhances the retro vibe. The “Death Mantis” title was built from vector art and multiple fonts, the Japanese lettering is filled with orchids through clipping masks, and a “Smerenie” label in the background provides depth.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Album Artworks</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Photo editing (portraits and/or products) + colour grading + composition.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Levels and Hue/Saturation adjustments</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Layer masks and clipping masks</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Blend modes and colour overlays</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Smudge Tool and custom brushes</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Type integrated into the composition</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 04: Stay Home Poster -->
+        <article class="feature" aria-labelledby="p4">
+          <div class="feature-head"><span class="dot"></span><h3 id="p4">Stay Home Poster</h3><span class="proj-tag">Project 04</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Stay Home Poster images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="p4-0">Mock-up 1</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p4-1">Mock-up 2</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p4-2">Purple</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p4-3">Orange</button>
+                </div>
+                <span class="uwin-tools"><span>Photoshop</span></span>
+              </div>
+              <div class="vview" id="p4-0" role="tabpanel"><img class="art" src="assets/personal/t5-mockup-1.webp" alt="Purple and green Stay Home poster framed on a living room wall above a wooden sideboard" loading="lazy"></div>
+              <div class="vview" id="p4-1" role="tabpanel" hidden><img class="art" src="assets/personal/t5-mockup-2.webp" alt="Orange Stay Home poster framed on a living room wall above a wooden sideboard" loading="lazy"></div>
+              <div class="vview" id="p4-2" role="tabpanel" hidden><img class="art" src="assets/personal/t5-poster-purple.webp" alt="Stay Home poster with purple cacti and green script type" loading="lazy"></div>
+              <div class="vview" id="p4-3" role="tabpanel" hidden><img class="art" src="assets/personal/t5-poster-orange.webp" alt="Stay Home poster with purple cacti over an orange background and orange type" loading="lazy"></div>
+              <div class="wfoot"><span>Stay Home Poster</span><span><b>Retouching</b> · composition · mock-up</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Stay Home Poster</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-info"/></svg>Concept</summary>
+                <div class="comp-body">A photo-based poster inviting you to choose peace and quiet for once: water your plants, drink some tea, introspect. I chose cacti and plants as the main subjects to carry the “Stay home” message.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-drop"/></svg>Colour</summary>
+                <div class="comp-body">I set the hue of the cacti to purple for a homey, cosy vibe. The palette reminds you of things at home: green for the plants, orange for the kitchen during golden hour and purple for the sofa right before watching your favourite show.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-scene"/></svg>Composition</summary>
+                <div class="comp-body">The plants were retouched and mirrored into a symmetrical composition that frames the type down the center. The second version swaps the accents to orange.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-tex"/></svg>Mock-up</summary>
+                <div class="comp-body">To present it, I placed both versions in a living room mock-up using Smart Objects, so the artwork sits naturally in the frame and the room&#x27;s lighting.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Stay Home Poster</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Create a photo-based poster + mock-up (retouching + composition + text).</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Hue shifting and colour grading</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Retouching and mirrored composition</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Display and script type pairing</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Smart Object mock-up presentation</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Two colourways of the same poster</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 05: Magazine Page -->
+        <article class="feature" aria-labelledby="p5">
+          <div class="feature-head"><span class="dot"></span><h3 id="p5">Magazine Page</h3><span class="proj-tag">Project 05</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Magazine Page images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true">Page</button>
+                </div>
+                <span class="uwin-tools"><span>InDesign</span></span>
+              </div>
+              <div class="vview" role="tabpanel"><img class="art" src="assets/personal/t6-page.webp" alt="Magazine page with a headline, deck, red-lit photo and three columns of body text" loading="lazy"></div>
+              <div class="wfoot"><span>Magazine Page</span><span><b>Column grid</b> · drop cap · folio</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Magazine Page</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-layout"/></svg>Grid</summary>
+                <div class="comp-body">A complete magazine page built on a three-column grid, with the headline and deck on top and a hero photo anchoring the body text that flows across the columns below.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-type"/></svg>Typographic Hierarchy</summary>
+                <div class="comp-body">Headline, deck, body copy and a drop cap to open the article. I used placeholder copy so the focus stays on the layout and the hierarchy.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-scroll"/></svg>Details</summary>
+                <div class="comp-body">A running footer with the issue date and a folio, like a real printed issue. The hero image is a stock photo by Frankie Cordoba on Unsplash.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Magazine Page</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">A magazine page (complete layout).</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Three-column grid</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Headline, deck and body hierarchy</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Drop cap</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Text threaded across columns</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Running footer and folio</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 06: Magazine Spread -->
+        <article class="feature" aria-labelledby="p6">
+          <div class="feature-head"><span class="dot"></span><h3 id="p6">Magazine Spread</h3><span class="proj-tag">Project 06</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Magazine Spread images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="p6-0">Spread</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p6-1">Detail</button>
+                </div>
+                <span class="uwin-tools"><span>InDesign</span></span>
+              </div>
+              <div class="vview" id="p6-0" role="tabpanel"><img class="art" src="assets/personal/t7-spread.webp" alt="Magazine spread titled The Moonshiners, a quick guide on self dismemberment, about the story of Dishonored" loading="lazy"></div>
+              <div class="vview" id="p6-1" role="tabpanel" hidden><img class="art" src="assets/personal/t7-detail.webp" alt="Close-up of the spread title in a classic serif and the large W drop cap" loading="lazy"></div>
+              <div class="wfoot"><span>Magazine Spread</span><span><b>Facing pages</b> · drop caps · pull quotes</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Magazine Spread</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-info"/></svg>Concept</summary>
+                <div class="comp-body">A two-page spread retelling the story of Dishonored (2012), titled “The Moonshiners: a quick guide on self dismemberment”.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-layout"/></svg>Layout</summary>
+                <div class="comp-body">Facing pages with a generous title area on the left and multi-column body text threaded across the spread, framed by running heads and folios.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-type"/></svg>Typography</summary>
+                <div class="comp-body">A classic serif for an editorial, literary feel, with large drop caps opening each part and italic pull quotes breaking up the long passages. Every character and location name is highlighted in red, so the reader can easily scan who&#x27;s who.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Magazine Spread</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Create a magazine spread.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Facing pages layout</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Multi-column text threading</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Drop caps and pull quotes</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Character styles for highlighted names</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Running heads and folios</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 07: Poster Series -->
+        <article class="feature" aria-labelledby="p7">
+          <div class="feature-head"><span class="dot"></span><h3 id="p7">Poster Series</h3><span class="proj-tag">Project 07</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Poster Series images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="p7-0">Series</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p7-1">Poster 1</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p7-2">Poster 2</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p7-3">Poster 3</button>
+                </div>
+                <span class="uwin-tools"><span>InDesign</span></span>
+              </div>
+              <div class="vview" id="p7-0" role="tabpanel"><img class="art" src="assets/personal/t8-series.webp" alt="Three workshop posters side by side in pale blue, dusty rose and green" loading="lazy"></div>
+              <div class="vview" id="p7-1" role="tabpanel" hidden><img class="art" src="assets/personal/t8-poster-1.webp" alt="First workshop poster, pale blue on top and dusty rose below" loading="lazy"></div>
+              <div class="vview" id="p7-2" role="tabpanel" hidden><img class="art" src="assets/personal/t8-poster-2.webp" alt="Second workshop poster with the text blocks rearranged" loading="lazy"></div>
+              <div class="vview" id="p7-3" role="tabpanel" hidden><img class="art" src="assets/personal/t8-poster-3.webp" alt="Third workshop poster with inverted colour blocking and a green credits box" loading="lazy"></div>
+              <div class="wfoot"><span>Poster Series</span><span><b>Visual system</b> · grid · colour blocking</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Poster Series</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-info"/></svg>Concept</summary>
+                <div class="comp-body">A series of three posters for an Adobe Creative Suite workshop: learn to use InDesign, Illustrator and Photoshop properly and build a functional workflow for any design direction, from beginner to junior.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-grid"/></svg>Visual System</summary>
+                <div class="comp-body">All three posters share the same building blocks: a pixel-style header, dashed-outline text boxes, the instructors&#x27; credits and a vertical date. Each poster rearranges them on the grid and swaps the colour blocking between pale blue, dusty rose and green, so they read as one family without repeating.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-type"/></svg>Typography</summary>
+                <div class="comp-body">A pixel display font for the header and the vertical date contrasts with a heavy, rounded sans serif for the copy, nodding to the digital tools the workshop is about.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Poster Series</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Create a series of 3 posters.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Modular layout system</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Colour blocking variations</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Vertical type</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Display and text font pairing</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Consistent series identity</span></div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 08: Portfolio Layout -->
+        <article class="feature" aria-labelledby="p8">
+          <div class="feature-head"><span class="dot"></span><h3 id="p8">Portfolio Layout</h3><span class="proj-tag">Project 08</span></div>
+          <div class="feature-media">
+            <div class="uwin vwin">
+              <div class="uwin-tabs" role="tablist" aria-label="Portfolio Layout images">
+                <div class="vtabs">
+                  <button class="vtab" type="button" role="tab" aria-selected="true" aria-controls="p8-0">Cover</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p8-1">About</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p8-2">Divider</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p8-3">Project</button>
+                  <button class="vtab" type="button" role="tab" aria-selected="false" aria-controls="p8-4">Icons</button>
+                </div>
+                <span class="uwin-tools"><span>InDesign</span></span>
+              </div>
+              <div class="vview" id="p8-0" role="tabpanel"><img class="art" src="assets/personal/t9-p1.webp" alt="Portfolio cover: Eva Bulai, Photo Edit, Icons, Illustrations, Spreads, Posters, April 2026" loading="lazy"></div>
+              <div class="vview" id="p8-1" role="tabpanel" hidden><img class="art" src="assets/personal/t9-p2.webp" alt="Portfolio about page with a portrait and a short bio" loading="lazy"></div>
+              <div class="vview" id="p8-2" role="tabpanel" hidden><img class="art" src="assets/personal/t9-p3.webp" alt="Portfolio section divider page for Photo Edit, album artworks" loading="lazy"></div>
+              <div class="vview" id="p8-3" role="tabpanel" hidden><img class="art" src="assets/personal/t9-p5.webp" alt="Portfolio project page showing the vaporwave album artwork with process notes" loading="lazy"></div>
+              <div class="vview" id="p8-4" role="tabpanel" hidden><img class="art" src="assets/personal/t9-p9.webp" alt="Portfolio page presenting the vector icons in circles" loading="lazy"></div>
+              <div class="wfoot"><span>Portfolio Layout</span><span><b>Parent pages</b> · grid · section pacing</span></div>
+            </div>
+          </div>
+          <div class="feature-detail">
+            <div class="uwin inspector" role="group" aria-label="Inspector">
+              <div class="uwin-tabs"><span class="uwin-tab">Inspector</span><span class="uwin-tools"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="go-head"><svg class="ic go-icon"><use href="#i-cube"/></svg><span class="wfield">Portfolio Layout</span></div>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-info"/></svg>Concept</summary>
+                <div class="comp-body">The first pages of my design portfolio, gathering the projects from this course: photo editing, icons, illustration, spread and posters. The brief asked for 8 to 10 pages; I ended up with 21.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-grid"/></svg>Parent Pages</summary>
+                <div class="comp-body">Every page shares the same frame: a purple border, a header strip with my name, the document title, contact and date, automatic page numbers and a rounded mint panel holding the content, all set up on parent pages so the whole document stays consistent.</div>
+              </details>
+              <details class="comp" open><summary><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic ctype"><use href="#i-scroll"/></svg>Pacing</summary>
+                <div class="comp-body">Each discipline opens with a divider page, followed by the work and short process notes, so the reader always knows where they are and why each piece looks the way it does.</div>
+              </details>
+            </div>
+            <div class="uwin hierarchy" role="group" aria-label="Project">
+              <div class="uwin-tabs"><span class="uwin-tab">Project</span><span class="uwin-tools"><svg class="ic"><use href="#i-kebab"/></svg></span></div>
+              <div class="h-toolbar"><span class="wfield plus">+</span><span class="wfield search"><svg class="ic"><use href="#i-search"/></svg>All</span></div>
+              <div class="h-tree">
+                <div class="h-row scene"><span class="fold-gap"></span><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Portfolio Layout</span></div>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Brief</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Create the first 8–10 pages of the portfolio.</span></div>
+                </details>
+                <details open><summary class="h-row group" style="--d:1"><svg class="ic fold"><use href="#i-fold"/></svg><svg class="ic"><use href="#i-folder"/></svg><span class="txt">Techniques</span></summary>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Parent pages and automatic page numbering</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Consistent header and frame system</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Section divider pages</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Process notes next to the work</span></div>
+                  <div class="h-row leaf" style="--d:2"><span class="fold-gap"></span><svg class="ic"><use href="#i-cube"/></svg><span class="txt">Landscape 16:9 format for on-screen reading</span></div>
+                </details>
+              </div>
             </div>
           </div>
         </article>
