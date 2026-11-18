@@ -11,19 +11,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap">
 <style>
-/* Layout: one long scroll on a dark forest-under-the-stars page. Each feature reads title -> big media -> Inspector + Hierarchy windows (Unity 6 layout, pastel colours). One typeface, Spotify-style: heavy tight headlines, quiet body. */
+/* Layout: one long scroll on a dark night-sky page. Each feature reads title -> big media -> Inspector + Hierarchy windows (Unity 6 layout, pastel colours). One typeface, Spotify-style: heavy tight headlines, quiet body. */
 :root {
-  --ink: #06140f;        /* page: forest night */
-  --panel: #0c241b;      /* raised surfaces on the page */
-  --panel-2: #123226;
-  --line: #1f4a3a;
+  /* page background (version: emerald) */
+  --ink: #03100a;
+  --bg-top: #05170f;
+  --bg-bottom: #020b06;
+  --panel: #0a1c15;
+  --panel-2: #0f261d;
+  --line: #1b3a2e;
+  --muted: #a7c0b3;
+  --glow-1: 56, 170, 120; --glow-1a: .19;
+  --glow-2: 185, 164, 255; --glow-2a: .10;
+  --glow-3: 30, 110, 80; --glow-3a: .22;
+  --spark-c: 170, 245, 196;
   --text: #f6f2ff;
-  --muted: #b3cbbd;
-  --violet: #3fbf86;     /* aurora */
   --spark-a: 246, 201, 107;  /* accent as r,g,b for glows */
   --spark-b: 185, 164, 255;  /* accent-2 as r,g,b */
-  --nebula: 63, 191, 134;
-  --spark-c: 170, 245, 196;  /* firefly mint */
   --accent: #f6c96b;     /* gold */
   --accent-2: #b9a4ff;   /* lavender */
   /* editor windows: a touch darker than pure pastel */
@@ -57,22 +61,56 @@ body {
 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
 
-/* Forest backdrop: green aurora + lavender/gold glows, stars above two pine treelines, drifting fireflies. Fixed behind everything */
+/* Night backdrop: soft glows from the page tokens, two star layers, drifting fireflies. Fixed behind everything */
+:root[data-bg="teal"] {
+  --ink: #030d12;
+  --bg-top: #05141c;
+  --bg-bottom: #030912;
+  --panel: #0a1a21;
+  --panel-2: #10242d;
+  --line: #1c3a45;
+  --muted: #a6bec6;
+  --glow-1: 56, 160, 170; --glow-1a: .18;
+  --glow-2: 185, 164, 255; --glow-2a: .14;
+  --glow-3: 60, 100, 190; --glow-3a: .18;
+  --spark-c: 160, 235, 228;
+}
+:root[data-bg="violet-moss"] {
+  --ink: #060a0b;
+  --bg-top: #0c0b1e;
+  --bg-bottom: #040d09;
+  --panel: #0e1619;
+  --panel-2: #141e22;
+  --line: #262f48;
+  --muted: #b3bccb;
+  --glow-1: 185, 164, 255; --glow-1a: .15;
+  --glow-2: 56, 170, 120; --glow-2a: .11;
+  --glow-3: 46, 35, 112; --glow-3a: .55;
+  --spark-c: 190, 240, 205;
+}
+:root[data-bg="pine"] {
+  --ink: #020704;
+  --bg-top: #040b07;
+  --bg-bottom: #020503;
+  --panel: #09160f;
+  --panel-2: #0f2018;
+  --line: #1a3325;
+  --muted: #afbfb1;
+  --glow-1: 246, 201, 107; --glow-1a: .11;
+  --glow-2: 56, 160, 100; --glow-2a: .15;
+  --glow-3: 185, 164, 255; --glow-3a: .07;
+  --spark-c: 205, 240, 170;
+}
 .space {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
   background:
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='200' viewBox='0 0 1200 200'><g fill='%2303100b' fill-opacity='1'><path d='M0 200V190Q300 182 600 190T1200 190V200Z'/><path d='M0.0 112.8L12.3 140.5L6.8 140.5L14.9 168.3L8.2 168.3L17.6 196.0L-17.6 196.0L-8.2 168.3L-14.9 168.3L-6.8 140.5L-12.3 140.5ZM52.2 87.7L66.0 123.8L59.8 123.8L69.0 159.9L61.4 159.9L72.0 196.0L32.3 196.0L42.9 159.9L35.3 159.9L44.5 123.8L38.3 123.8ZM109.3 61.4L128.3 106.2L119.7 106.2L132.3 151.1L122.0 151.1L136.4 196.0L82.3 196.0L96.7 151.1L86.4 151.1L98.9 106.2L90.4 106.2ZM157.4 107.1L167.9 136.7L163.2 136.7L170.2 166.4L164.4 166.4L172.5 196.0L142.2 196.0L150.3 166.4L144.5 166.4L151.5 136.7L146.8 136.7ZM201.1 79.2L215.3 118.1L208.9 118.1L218.4 157.1L210.6 157.1L221.4 196.0L180.7 196.0L191.6 157.1L183.8 157.1L193.3 118.1L186.8 118.1ZM258.3 107.4L269.7 136.9L264.6 136.9L272.2 166.5L265.9 166.5L274.6 196.0L242.0 196.0L250.7 166.5L244.5 166.5L252.0 136.9L246.9 136.9ZM291.6 46.2L314.0 96.1L303.9 96.1L318.9 146.1L306.6 146.1L323.7 196.0L259.5 196.0L276.6 146.1L264.3 146.1L279.2 96.1L269.1 96.1ZM351.4 76.7L365.7 116.5L359.3 116.5L368.8 156.2L361.0 156.2L371.9 196.0L330.9 196.0L341.8 156.2L333.9 156.2L343.5 116.5L337.0 116.5ZM393.8 86.2L407.4 122.8L401.2 122.8L410.3 159.4L402.9 159.4L413.2 196.0L374.3 196.0L384.7 159.4L377.3 159.4L386.3 122.8L380.2 122.8ZM456.0 96.5L468.5 129.7L462.9 129.7L471.2 162.8L464.4 162.8L473.9 196.0L438.2 196.0L447.7 162.8L440.9 162.8L449.2 129.7L443.6 129.7ZM514.0 116.0L526.7 142.7L521.0 142.7L529.4 169.3L522.5 169.3L532.1 196.0L496.0 196.0L505.6 169.3L498.7 169.3L507.1 142.7L501.4 142.7ZM560.4 81.8L575.6 119.9L568.7 119.9L578.9 157.9L570.5 157.9L582.1 196.0L538.6 196.0L550.2 157.9L541.9 157.9L552.0 119.9L545.1 119.9ZM607.7 111.0L618.0 139.4L613.4 139.4L620.2 167.7L614.6 167.7L622.4 196.0L593.1 196.0L600.9 167.7L595.3 167.7L602.1 139.4L597.5 139.4ZM667.3 107.2L680.7 136.8L674.7 136.8L683.6 166.4L676.3 166.4L686.5 196.0L648.0 196.0L658.3 166.4L650.9 166.4L659.8 136.8L653.8 136.8ZM705.8 48.5L728.9 97.7L718.5 97.7L733.8 146.8L721.2 146.8L738.8 196.0L672.8 196.0L690.4 146.8L677.8 146.8L693.1 97.7L682.7 97.7ZM761.8 65.0L780.6 108.7L772.1 108.7L784.6 152.3L774.3 152.3L788.6 196.0L734.9 196.0L749.2 152.3L739.0 152.3L751.5 108.7L743.0 108.7ZM817.0 116.2L828.1 142.8L823.1 142.8L830.4 169.4L824.4 169.4L832.8 196.0L801.1 196.0L809.6 169.4L803.5 169.4L810.9 142.8L805.9 142.8ZM875.2 109.9L888.8 138.6L882.7 138.6L891.7 167.3L884.3 167.3L894.6 196.0L855.8 196.0L866.2 167.3L858.8 167.3L867.8 138.6L861.7 138.6ZM935.5 93.2L949.3 127.5L943.1 127.5L952.2 161.7L944.7 161.7L955.2 196.0L915.7 196.0L926.2 161.7L918.7 161.7L927.9 127.5L921.7 127.5ZM981.8 95.1L998.0 128.8L990.7 128.8L1001.4 162.4L992.6 162.4L1004.9 196.0L958.6 196.0L970.9 162.4L962.1 162.4L972.8 128.8L965.5 128.8ZM1026.0 123.9L1034.9 147.9L1030.9 147.9L1036.8 172.0L1031.9 172.0L1038.7 196.0L1013.3 196.0L1020.1 172.0L1015.2 172.0L1021.1 147.9L1017.1 147.9ZM1080.8 46.6L1101.7 96.4L1092.3 96.4L1106.2 146.2L1094.7 146.2L1110.6 196.0L1050.9 196.0L1066.8 146.2L1055.4 146.2L1069.3 96.4L1059.9 96.4ZM1128.4 82.0L1145.5 120.0L1137.8 120.0L1149.2 158.0L1139.8 158.0L1152.9 196.0L1103.9 196.0L1116.9 158.0L1107.5 158.0L1118.9 120.0L1111.2 120.0ZM1167.4 77.3L1184.3 116.9L1176.7 116.9L1187.9 156.4L1178.6 156.4L1191.5 196.0L1143.2 196.0L1156.1 156.4L1146.8 156.4L1158.1 116.9L1150.5 116.9Z'/></g></svg>") repeat-x left bottom / 1000px 167px,
-    linear-gradient(to top, rgba(var(--spark-c), .07), transparent 26vh),
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='260' viewBox='0 0 900 260'><g fill='%230b2c21' fill-opacity='1'><path d='M0 260V244Q225 236 450 244T900 244V260Z'/><path d='M0.0 127.6L15.3 168.4L8.4 168.4L18.6 209.2L10.2 209.2L21.9 250.0L-21.9 250.0L-10.2 209.2L-18.6 209.2L-8.4 168.4L-15.3 168.4ZM41.8 152.8L55.5 185.2L49.3 185.2L58.5 217.6L51.0 217.6L61.4 250.0L22.1 250.0L32.6 217.6L25.1 217.6L34.2 185.2L28.0 185.2ZM76.3 154.2L89.8 186.1L83.7 186.1L92.6 218.1L85.3 218.1L95.5 250.0L57.1 250.0L67.3 218.1L60.0 218.1L68.9 186.1L62.9 186.1ZM102.6 116.6L118.8 161.1L111.5 161.1L122.3 205.5L113.4 205.5L125.8 250.0L79.3 250.0L91.7 205.5L82.8 205.5L93.6 161.1L86.3 161.1ZM130.2 117.5L150.5 161.7L141.4 161.7L154.9 205.8L143.8 205.8L159.3 250.0L101.1 250.0L116.6 205.8L105.4 205.8L119.0 161.7L109.8 161.7ZM158.6 137.7L174.9 175.1L167.6 175.1L178.4 212.6L169.5 212.6L181.9 250.0L135.3 250.0L147.7 212.6L138.8 212.6L149.6 175.1L142.3 175.1ZM207.9 102.3L227.9 151.5L218.9 151.5L232.2 200.8L221.3 200.8L236.5 250.0L179.2 250.0L194.5 200.8L183.5 200.8L196.9 151.5L187.8 151.5ZM257.9 155.3L272.6 186.9L265.9 186.9L275.7 218.4L267.7 218.4L278.8 250.0L236.9 250.0L248.1 218.4L240.1 218.4L249.8 186.9L243.2 186.9ZM290.5 145.6L303.4 180.4L297.6 180.4L306.2 215.2L299.1 215.2L309.0 250.0L272.0 250.0L281.9 215.2L274.8 215.2L283.4 180.4L277.6 180.4ZM323.6 78.4L345.3 135.6L335.6 135.6L350.0 192.8L338.1 192.8L354.6 250.0L292.6 250.0L309.1 192.8L297.2 192.8L311.7 135.6L301.9 135.6ZM363.6 96.1L384.3 147.4L375.0 147.4L388.8 198.7L377.5 198.7L393.2 250.0L334.0 250.0L349.8 198.7L338.5 198.7L352.2 147.4L342.9 147.4ZM402.8 153.7L414.5 185.8L409.2 185.8L417.0 217.9L410.6 217.9L419.5 250.0L386.1 250.0L395.0 217.9L388.6 217.9L396.3 185.8L391.1 185.8ZM433.3 92.0L454.9 144.6L445.2 144.6L459.6 197.3L447.7 197.3L464.2 250.0L402.4 250.0L418.8 197.3L407.0 197.3L421.4 144.6L411.6 144.6ZM466.5 101.4L487.0 151.0L477.8 151.0L491.4 200.5L480.2 200.5L495.8 250.0L437.2 250.0L452.8 200.5L441.6 200.5L455.3 151.0L446.0 151.0ZM499.4 80.6L524.6 137.0L513.2 137.0L529.9 193.5L516.2 193.5L535.3 250.0L463.5 250.0L482.6 193.5L468.9 193.5L485.6 137.0L474.3 137.0ZM530.9 102.6L551.7 151.7L542.3 151.7L556.1 200.9L544.8 200.9L560.6 250.0L501.2 250.0L517.0 200.9L505.6 200.9L519.5 151.7L510.1 151.7ZM578.3 87.1L599.7 141.4L590.1 141.4L604.3 195.7L592.6 195.7L608.9 250.0L547.8 250.0L564.1 195.7L552.4 195.7L566.6 141.4L557.0 141.4ZM628.4 148.2L642.3 182.1L636.1 182.1L645.3 216.1L637.7 216.1L648.3 250.0L608.6 250.0L619.1 216.1L611.6 216.1L620.8 182.1L614.5 182.1ZM672.9 144.8L687.6 179.9L681.0 179.9L690.7 214.9L682.7 214.9L693.9 250.0L651.9 250.0L663.1 214.9L655.1 214.9L664.8 179.9L658.2 179.9ZM699.2 93.2L722.9 145.5L712.2 145.5L728.0 197.7L715.0 197.7L733.0 250.0L665.3 250.0L683.4 197.7L670.4 197.7L686.1 145.5L675.5 145.5ZM739.0 72.5L762.4 131.6L751.9 131.6L767.5 190.8L754.7 190.8L772.5 250.0L705.5 250.0L723.3 190.8L710.5 190.8L726.1 131.6L715.5 131.6ZM781.9 100.6L803.3 150.4L793.7 150.4L807.9 200.2L796.2 200.2L812.5 250.0L751.3 250.0L767.6 200.2L755.9 200.2L770.1 150.4L760.4 150.4ZM818.7 76.0L846.3 134.0L833.9 134.0L852.2 192.0L837.2 192.0L858.2 250.0L779.3 250.0L800.3 192.0L785.2 192.0L803.5 134.0L791.1 134.0ZM856.0 93.6L875.0 145.7L866.5 145.7L879.1 197.9L868.7 197.9L883.2 250.0L828.8 250.0L843.3 197.9L832.9 197.9L845.6 145.7L837.0 145.7ZM899.1 95.3L923.9 146.9L912.7 146.9L929.2 198.4L915.7 198.4L934.6 250.0L863.5 250.0L882.4 198.4L868.9 198.4L885.4 146.9L874.2 146.9ZM-0.9 95.3L23.9 146.9L12.7 146.9L29.2 198.4L15.7 198.4L34.6 250.0L-36.5 250.0L-17.6 198.4L-31.1 198.4L-14.6 146.9L-25.8 146.9Z'/></g></svg>") repeat-x 340px bottom / 760px 220px,
-    radial-gradient(90vw 28vh at 50% 100%, rgba(var(--spark-c), .10), transparent 70%),
-    radial-gradient(70vw 40vw at 82% 4%, rgba(var(--nebula), .26), transparent 70%),
-    radial-gradient(50vw 34vw at 12% 18%, rgba(var(--spark-b), .12), transparent 70%),
-    radial-gradient(60vw 40vw at 30% 70%, rgba(var(--nebula), .14), transparent 70%),
-    radial-gradient(36vw 26vw at 78% 62%, rgba(var(--spark-a), .07), transparent 70%),
-    linear-gradient(to bottom, #071a17 0%, var(--ink) 55%, #061a12 100%);
+    radial-gradient(70vw 45vw at 84% 0%, rgba(var(--glow-1), var(--glow-1a)), transparent 70%),
+    radial-gradient(55vw 40vw at 6% 24%, rgba(var(--glow-2), var(--glow-2a)), transparent 70%),
+    radial-gradient(80vw 55vw at 40% 108%, rgba(var(--glow-3), var(--glow-3a)), transparent 70%),
+    linear-gradient(to bottom, var(--bg-top), var(--ink) 50%, var(--bg-bottom));
 }
 .space::before, .space::after { content: ""; position: absolute; background-repeat: repeat; }
-/* Stars: twinkle in the sky, fade out before the treeline */
+/* Stars */
 .space::before {
   inset: 0;
   background-image:
@@ -85,8 +123,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     radial-gradient(1.6px 1.6px at 60px 120px, rgba(255,255,255,.95), transparent 60%),
     radial-gradient(1.6px 1.6px at 250px 150px, rgba(var(--spark-b),.95), transparent 60%);
   background-size: 320px 320px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 80%);
-  mask-image: linear-gradient(to bottom, #000 45%, transparent 80%);
   animation: twinkle 5s ease-in-out infinite alternate;
 }
 /* Fireflies: soft gold and mint glows that drift slowly */
@@ -285,14 +321,14 @@ p { margin: 0; }
 .drawer.sub > .drawer-body { padding-top: clamp(36px, 5vw, 56px); }
 .drawer-body > .drawer.sub + .drawer.sub { margin-top: 18px; }
 /* Placeholder art (Star Wars Outlaws until real images are added) */
-.ph-art { display: grid; place-items: center; background: radial-gradient(ellipse at 30% 20%, rgba(var(--spark-b), .35), transparent 60%), radial-gradient(ellipse at 80% 90%, rgba(var(--spark-a), .25), transparent 55%), repeating-linear-gradient(45deg, #0d281f 0 14px, #113126 14px 28px); color: var(--text); }
-.ph-art span { font-family: "Press Start 2P", ui-monospace, monospace; font-size: 11px; padding: 9px 12px; background: rgba(4, 16, 11, .72); border: 2px solid var(--w-line); border-radius: 8px; }
+.ph-art { display: grid; place-items: center; background: radial-gradient(ellipse at 30% 20%, rgba(var(--spark-b), .35), transparent 60%), radial-gradient(ellipse at 80% 90%, rgba(var(--spark-a), .25), transparent 55%), repeating-linear-gradient(45deg, var(--panel) 0 14px, var(--panel-2) 14px 28px); color: var(--text); }
+.ph-art span { font-family: "Press Start 2P", ui-monospace, monospace; font-size: 11px; padding: 9px 12px; background: color-mix(in srgb, var(--ink) 75%, transparent); border: 2px solid var(--w-line); border-radius: 8px; }
 .drawer-thumb.ph-art { display: block; aspect-ratio: 16 / 9; }
 .ph-banner { width: 100%; aspect-ratio: 16 / 7; border-bottom: 2px solid var(--w-line); }
 .ph-view { width: 100%; aspect-ratio: 16 / 9; }
 
 /* Personal Projects: image views inside the Game window + project number tag */
-.vview .art { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #0a1f17; }
+.vview .art { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: var(--panel); }
 .vtabs { flex-wrap: wrap; }
 .proj-tag { margin-left: auto; flex: none; font-family: "Press Start 2P", ui-monospace, monospace; font-size: 9px; line-height: 1; padding: 7px 9px; color: var(--w-ink); background: var(--accent-2); border: 2px solid var(--w-line); border-radius: 6px; box-shadow: 3px 3px 0 var(--accent); }
 
@@ -304,7 +340,7 @@ p { margin: 0; }
 .yt:hover .play { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-2); }
 .yt:active .play { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--accent-2); }
 .yt .play svg { width: 22px; height: 22px; fill: var(--w-ink); margin-left: 4px; }
-.yt .yt-label { position: absolute; left: 12px; bottom: 12px; padding: 5px 12px; border-radius: 999px; background: rgba(4, 16, 11, .8); color: #fff; font-size: 0.75rem; font-weight: 600; }
+.yt .yt-label { position: absolute; left: 12px; bottom: 12px; padding: 5px 12px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 80%, transparent); color: #fff; font-size: 0.75rem; font-weight: 600; }
 .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 /* ---------- Unity 6 editor windows, pastel colours ---------- */
