@@ -13,18 +13,22 @@
 <style>
 /* Layout: one long scroll on a dark night-sky page. Each feature reads title -> big media -> Inspector + Hierarchy windows (Unity 6 layout, pastel colours). One typeface, Spotify-style: heavy tight headlines, quiet body. */
 :root {
-  /* page background (version: emerald) */
-  --ink: #03100a;
-  --bg-top: #05170f;
-  --bg-bottom: #020b06;
-  --panel: #0a1c15;
-  --panel-2: #0f261d;
-  --line: #1b3a2e;
-  --muted: #a7c0b3;
-  --glow-1: 56, 170, 120; --glow-1a: .19;
-  --glow-2: 185, 164, 255; --glow-2a: .10;
-  --glow-3: 30, 110, 80; --glow-3a: .22;
-  --spark-c: 170, 245, 196;
+  /* page background: Violet Moss. Violet night sky (shadows tinted with the panels' indigo) settling into moss */
+  --ink: #070b07;
+  --bg-top: #0d0b1d;
+  --bg-bottom: #0a1508;
+  --panel: #111a12;
+  --panel-2: #18241a;
+  --line: #2a3a34;
+  --muted: #b6c3b2;
+  --glow-1: 185, 164, 255; --glow-1a: .13;
+  --glow-2: 128, 168, 82; --glow-2a: .15;
+  --glow-3: 92, 132, 58; --glow-3a: .30;
+  --spark-c: 205, 238, 150;  /* firefly lime-moss */
+  /* cursor sparkles: moss, lavender, a little gold */
+  --cursor-a: 178, 226, 128;
+  --cursor-b: 185, 164, 255;
+  --cursor-c: 246, 201, 107;
   --text: #f6f2ff;
   --spark-a: 246, 201, 107;  /* accent as r,g,b for glows */
   --spark-b: 185, 164, 255;  /* accent-2 as r,g,b */
@@ -62,51 +66,13 @@ body {
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
 
 /* Night backdrop: soft glows from the page tokens, two star layers, drifting fireflies. Fixed behind everything */
-:root[data-bg="teal"] {
-  --ink: #030d12;
-  --bg-top: #05141c;
-  --bg-bottom: #030912;
-  --panel: #0a1a21;
-  --panel-2: #10242d;
-  --line: #1c3a45;
-  --muted: #a6bec6;
-  --glow-1: 56, 160, 170; --glow-1a: .18;
-  --glow-2: 185, 164, 255; --glow-2a: .14;
-  --glow-3: 60, 100, 190; --glow-3a: .18;
-  --spark-c: 160, 235, 228;
-}
-:root[data-bg="violet-moss"] {
-  --ink: #060a0b;
-  --bg-top: #0c0b1e;
-  --bg-bottom: #040d09;
-  --panel: #0e1619;
-  --panel-2: #141e22;
-  --line: #262f48;
-  --muted: #b3bccb;
-  --glow-1: 185, 164, 255; --glow-1a: .15;
-  --glow-2: 56, 170, 120; --glow-2a: .11;
-  --glow-3: 46, 35, 112; --glow-3a: .55;
-  --spark-c: 190, 240, 205;
-}
-:root[data-bg="pine"] {
-  --ink: #020704;
-  --bg-top: #040b07;
-  --bg-bottom: #020503;
-  --panel: #09160f;
-  --panel-2: #0f2018;
-  --line: #1a3325;
-  --muted: #afbfb1;
-  --glow-1: 246, 201, 107; --glow-1a: .11;
-  --glow-2: 56, 160, 100; --glow-2a: .15;
-  --glow-3: 185, 164, 255; --glow-3a: .07;
-  --spark-c: 205, 240, 170;
-}
 .space {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
   background:
     radial-gradient(70vw 45vw at 84% 0%, rgba(var(--glow-1), var(--glow-1a)), transparent 70%),
     radial-gradient(55vw 40vw at 6% 24%, rgba(var(--glow-2), var(--glow-2a)), transparent 70%),
     radial-gradient(80vw 55vw at 40% 108%, rgba(var(--glow-3), var(--glow-3a)), transparent 70%),
+    radial-gradient(60vw 30vw at 50% -6%, rgba(46, 35, 112, .45), transparent 70%),
     linear-gradient(to bottom, var(--bg-top), var(--ink) 50%, var(--bg-bottom));
 }
 .space::before, .space::after { content: ""; position: absolute; background-repeat: repeat; }
@@ -1532,7 +1498,7 @@ heroToggle.addEventListener('click', () => {
   const ctx = canvas.getContext('2d');
   const MAX = 120;
   let SPARK = [];
-  const readSpark = () => { const cs = getComputedStyle(document.documentElement); SPARK = [cs.getPropertyValue('--spark-a').trim(), cs.getPropertyValue('--spark-b').trim()]; };
+  const readSpark = () => { const cs = getComputedStyle(document.documentElement); SPARK = ['--cursor-a', '--cursor-b', '--cursor-c'].map(v => cs.getPropertyValue(v).trim()); };
   readSpark();
   window.addEventListener('palettechange', readSpark);
   const parts = [];
@@ -1546,7 +1512,7 @@ heroToggle.addEventListener('click', () => {
   function emit(x, y, burst) {
     if (parts.length >= MAX) return;
     const a = Math.random() * Math.PI * 2, s = burst ? 0.6 + Math.random() * 1.4 : 0.15 + Math.random() * 0.25;
-    parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - (burst ? 0.3 : 0.15), life: 1, decay: 0.008 + Math.random() * 0.014, r: 0.8 + Math.random() * 1.8, pink: Math.random() < 0.6 });
+    parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - (burst ? 0.3 : 0.15), life: 1, decay: 0.008 + Math.random() * 0.014, r: 0.8 + Math.random() * 1.8, hue: (q => q < 0.5 ? 0 : q < 0.85 ? 1 : 2)(Math.random()) });
   }
   const hero = canvas.parentElement;
   hero.addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); pointer = { x: e.clientX - r.left, y: e.clientY - r.top }; });
@@ -1561,7 +1527,7 @@ heroToggle.addEventListener('click', () => {
       const p = parts[i];
       p.x += p.vx; p.y += p.vy; p.vy += 0.004; p.life -= p.decay;
       if (p.life <= 0) { parts.splice(i, 1); continue; }
-      const col = p.pink ? SPARK[0] : SPARK[1];
+      const col = SPARK[p.hue];
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
       g.addColorStop(0, `rgba(${col},${0.9 * p.life})`);
       g.addColorStop(1, `rgba(${col},0)`);
